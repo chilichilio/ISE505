@@ -1,0 +1,27 @@
+Option Explicit
+Sub runPSA()
+
+Dim i As Integer
+Dim N As Integer
+
+N = 1000
+
+Range("Control!PSA").Value = 1
+' Range("Control2!RR").Value = 1
+Application.Calculation = xlCalculationManual
+Application.ScreenUpdating = False
+
+For i = 1 To N
+    Application.Calculate
+    Application.StatusBar = "Reached iteration" & i
+    Sheets("PSA results").Cells(i + 3, 1).Value2 = i
+    Sheets("PSA results").Range("$B$3:$H$3").Offset(i, 0).Value2 = Sheets("PSA results").Range("$B$3:$H$3").Value2
+Next i
+
+Application.Calculation = xlCalculationAutomatic
+Application.ScreenUpdating = True
+Application.StatusBar = False
+Range("Control!PSA").Value = 0
+' Range("Control2!RR").Value = 0
+
+End Sub
