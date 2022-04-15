@@ -1,0 +1,44 @@
+#everytime you start the R, you'll have to chooseCRANmirror (I havent try if it's okay without this)
+#choose the first https~
+>chooseCRANmirror()
+#have to import the packages every time reopen the console
+>library(rio)
+>library(tidyverse)
+#don't forget to change the directory
+#since we've saved the data file as .csv last time, we don't need to use the import function again
+#simply use read.csv command
+llcp2020 <- read.csv("LLCP"
+
+"""
+overview of the BRFSS
+there are 3 types of question in the survey
+1. core questions; 2. optional; 3. state-added, it allows states for additional questions
+"""
+
+#to list these column names of the data file
+>colnames(llcp2020)
+#or
+>names(llcp2020)
+
+#to read data in a specific column, like the GENHLTH
+>llcp2020$GENHLTH
+
+#get the type of this column's data
+>class(llcp2020$GENHLTH)
+[1] "integer"
+
+#to make R remember this data as the type we want, like we want R remember this GENHLTH data as factor rather than integer, and assign this
+#so we could view them as factor rather than integer
+>llcp2020$GENHLTH <- as.factor(llcp2020$GENHLTH)
+
+#if we want to read the first column of the data file,[x,y],x == row, y= == column
+>llcp2020[,1]
+
+#if we don't know the exact column number, but we know the names, e.g."states"
+#to read the columns for the states, we'll get the same thing as the line 34
+>llcp2020[,"X_STATE"]
+
+#if we use the "[[]]", we can get the row or column without the column or row number
+>llcp2020[[1]]
+#this will get the first column without putting the row number, or
+>llcp2020[["X_STATE"]]
