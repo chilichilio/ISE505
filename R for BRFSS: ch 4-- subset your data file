@@ -1,0 +1,8 @@
+#to ask whether there is a "~" function, or know how it could be used, e.g. "as.integer()"
+>?as.integer
+#this will take you to the internet about this function
+
+#"BRFSS Modules Used by State". this file includes the information about addtional modules adopted by diffenrent states
+#to drop those modules without answers for a specific state, take California for example
+#step1: filter data only for California state, since the state number == 6
+> ca2017 = filter(llcp2017,X_STATE == 6)
