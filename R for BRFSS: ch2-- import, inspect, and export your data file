@@ -11,7 +11,7 @@
 >LLCP2020
 #too much information, just read the headings  in a horizontal way, or you can read the heading in a vertical way like the way in line 20, these are the variables' names
 >head(LLCP2020)
-#to see the structure, like how they collect the data, 
+#to see the structure, like how they collect the data, str here for structure not string!!
 #for the first line, state == the state of their first survey, 1 == the code
 >str(LLCP2020)
 #look at the tail
