@@ -1,0 +1,28 @@
+#step 1: change the directory
+#install packages
+>install.packages("rio")
+>install.packages("tidyverse")
+#import the packages
+>library(rio)
+>library(tidyverse)
+#the file may not be found. solution -> delete the file extension and rewrite
+>LLCP2020 <- import("LLCP2020.XPT")
+#read the file 
+>LLCP2020
+#too much information, just read the headings  in a horizontal way, or you can read the heading in a vertical way like the way in line 20, these are the variables' names
+>head(LLCP2020)
+#to see the structure, like how they collect the data, 
+#for the first line, state == the state of their first survey, 1 == the code
+>str(LLCP2020)
+#look at the tail
+#the last line you can see the how many results of their survey, there are 401,958 observations in this survey
+>tail(LLCP2020)
+#read the head in a vertical way
+>glimpse(LLCP2020)
+#display column names
+>colnames(LLCP2020)
+#or
+>names(LLCP2020)
+#to export the data, this will be exported as an excel file
+>export(LLCP2020,"LLCP2020.csv")
+#blank spaces in excel == missing data, some optional questions states can decide to or not to answer
