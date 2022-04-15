@@ -1,0 +1,50 @@
+#search for "cdc brfss"
+#publications and resources
+#click on the servaillance summaries on the left side, this is the brief conclusion about the statistics
+#R can't recognize anything starts with underscore, so "_STATE" will be "X_STATE"
+#setCRANmirror
+#set the directory
+#read the csv file
+>chooseCRANmirror()
+>library(rio)
+>library(tidyverse)
+>ca_girls17 = read.csv("ca_girls17.scv",header=TRUE)
+#this time to estimate the prevalence, already select 23 variables
+#to keep these selected variables and concatenate them & assign them to a new variable, variable = c(), put variable names in the parenthesis
+>keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "SEX", "X_RFHLTH", "X_PHYS14D", "X_MENT14D", "X_HCVU651", "CHECKUP1", "CHOLCHK1", "X_RFSMOK3", "X_RFBING5", "X_TOTINDA", "X_FRTLT1A", "X_VEGLT1A", "X_RFBMI5", "DIABETE3", "HAVARTH3", "ADDEPEV2", "BPHIGH4", "TOLDHI2", "CVDCRHD4", "CVDSTRK3")
+#to make a subset data file, named cg17_pe for california girls 2017 prevalence estimate
+#we keep the columns
+#ca_girls17 is not a function!!! use[] rather ()
+cg17_pe = ca_girls17[,keep_var]
+#we want R to recognize these data as factors rather than numbers, and we want to recode some of them
+#e.g. start with the 'SEX' variable, we wanna recode '1' to M for male, '2' to F for female, '0' for missing data
+#combine the former recoding step with the as.factor function
+> cg17_pe$SEX = as.factor(recode(cg17_pe$SEX, '1' = 'M', '2' = 'F', .missing = '0', .default = '0'))
+> cg17_pe$X_RFHLTH = as.factor(recode(cg17_pe$X_RFHLTH, '1' = '1', .default = '0', .missing = '0'))
+> cg17_pe$X_PHYS14D = as.factor(recode(cg17_pe$X_PHYS14D, '3' = '1', .default = '0', .missing = '0'))
+> cg17_pe$X_MENT14D = as.factor(recode(cg17_pe$X_MENT14D, '3' = '1', .default = '0', .missing = '0'))
+> 
+> cg17_pe$X_HCVU651 = as.factor(recode(cg17_pe$X_HCVU651, '1' = '1', .default = '0', .missing = '0'))
+> 
+> cg17_pe$CHECKUP1 = as.factor(recode(cg17_pe$CHECKUP1, '1' = '1',  .default = '0', .missing = '0'))
+> cg17_pe$CHOLCHK1 = as.factor(recode(cg17_pe$CHOLCHK1, '1' = '0', '2' = '1',  '3' = '1',  '4' = '1',  '5' = '1',  .default = '0', .missing = '0'))
+> cg17_pe$X_RFSMOK3 = as.factor(recode(cg17_pe$X_RFSMOK3, '2' = '1', .default = '0', .missing = '0'))
+> cg17_pe$X_RFBING5 = as.factor(recode(cg17_pe$X_RFBING5, '2' = '1', .default = '0', .missing = '0'))
+> cg17_pe$X_TOTINDA = as.factor(recode(cg17_pe$X_TOTINDA, '2' = '1', .default = '0', .missing = '0'))
+> cg17_pe$X_FRTLT1A = as.factor(recode(cg17_pe$X_FRTLT1A, '2' = '1', .default = '0', .missing = '0'))
+> cg17_pe$X_VEGLT1A = as.factor(recode(cg17_pe$X_VEGLT1A, '2' = '1', .default = '0', .missing = '0'))
+> cg17_pe$X_RFBMI5 = as.factor(recode(cg17_pe$X_RFBMI5, '2' = '1', .default = '0', .missing = '0'))
+> cg17_pe$DIABETE3 = as.factor(recode(cg17_pe$DIABETE3, '1' = '1', .default = '0', .missing = '0'))
+> cg17_pe$HAVARTH3 = as.factor(recode(cg17_pe$HAVARTH3, '1' = '1', .default = '0', .missing = '0'))
+> cg17_pe$ADDEPEV2 = as.factor(recode(cg17_pe$ADDEPEV2, '1' = '1', .default = '0', .missing = '0'))
+> cg17_pe$BPHIGH4 = as.factor(recode(cg17_pe$BPHIGH4, '1' = '1', .default = '0', .missing = '0'))
+> cg17_pe$TOLDHI2 = as.factor(recode(cg17_pe$TOLDHI2, '1' = '1', .default = '0', .missing = '0'))
+> cg17_pe$CVDCRHD4 = as.factor(recode(cg17_pe$CVDCRHD4, '1' = '1', .default = '0', .missing = '0'))
+> cg17_pe$CVDSTRK3 = as.factor(recode(cg17_pe$CVDSTRK3, '1' = '1', .default = '0', .missing = '0'))
+> str(cg17_pe)
+#export this data file
+> export(cg17_pe,"cg17_pe.csv")
+#note: when we export file like this and open the new csv file, we might be noticed of the possible missing of data
+#check: x = read.csv("cg17_pe.csv",header = TRUE)
+#> str(x), we'll find that they go back to integers rather than factors
+~
