@@ -6,3 +6,49 @@
 #to drop those modules without answers for a specific state, take California for example
 #step1: filter data only for California state, since the state number == 6
 > ca2017 = filter(llcp2017,X_STATE == 6)
+
+#'data.frame':	9358 obs. of  358 variables:
+#this means 9358 observations taken in this state
+#to know how many missing data cells in each module
+>colSums(is.na(ca2017))
+#this will return how many missing data points in each column
+
+#to know if nobody answered in any column
+>colSums(is.na(llcp2017)) == 9358
+#this will return the "TRUE" or "FALSE" if the above condition is true
+#or without the exact number
+>colSums(is.na(ca2017)) == nrow(ca2017)
+
+#to find out those 100% missing data columns and show them on the screen
+which(colSums(is.na(ca2017)) == nrow(ca2017))
+#all the columns with 100% missing data will show on the screen, with its name and corresponding column number
+#assign these 100% missing data columns to a variable, later to drop
+drop_var = which(colSums(is.na(ca2017)) == nrow(ca2017))
+#show these drop_var from ca2017, to look at its structure, assign these data to a variable
+>a = ca2017[,drop_var]
+>str(a)
+#can use glimpse(a) to check the frame
+
+#to get the data without these missing data columns
+>ca2017drop_var = ca2017[,-drop_var]
+#str(ca2017drop_var) or glimpse(ca2017drop_var) to check the structure
+
+---------------------------------------------------------------------------
+#make hypotheses
+#we believe CA girls are healthy as boys
+#Ho: girls > boys
+#find variable names about "SEX" in the BRFSS's codebook file == SEX, here, Male == 1, Female == 2, Refused == 9
+#to get how many males and females in the responses
+>count(ca2017drop_var,vars = SEX)
+#if we want to know who are the people refused to answer about their sex
+>which(ca2017drop_var$SEX == 9)
+#to drop these values who refused to answer their sex, and assign the new data table to a variable, sexR means who refused to answer their sex
+>sexR = which(ca2017drop_var$SEX == 9)
+#these values are in the row, to drop them, we have to use the filter function
+>ca2017drop_varMF = filter(ca2017frop_var[-sexR,])
+#check the structure and frame
+>str(ca2017drop_varMF)
+>glimpse(ca2017drop_varMF)
+#to export these filtered data
+>ca_girls17 = ca2017drop_varMF
+>export(ca_girls17,"ca_girls17.csv")
