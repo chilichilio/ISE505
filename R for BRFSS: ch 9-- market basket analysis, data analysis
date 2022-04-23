@@ -16,3 +16,30 @@ a1 = apriori(cg17_dm, parameter = list(confidence = 0.5, minlen = 2, maxlen = 15
 # list(none = c(...)): list all except the combination of the c()
 mba = apriori(cg17_dm, parameter = list(confidence = 0.5, minlen = 2, maxlen = 15, maxtime = 0, target = "rules"), appearance = list(none = c("DEAF=0", "BPHIGH4=0", "DIABETE3=0", "CHCKIDNY=0", "ASTHMA3=0", "HAVARTH3=0", "CVDCRHD4=0", "CVDINFR4=0", "CVDSTRK3=0", "CHCCOPD1=0", "CHCOCNCR=0", "BLIND=0", "X_RFBMI5=0", "X_RFSMOK3=0")), control=list(memopt=TRUE, load=FALSE))
 inspect(mba)
+# we want to set one side of the "=>" to be sex, so we can relate the health variables to the gender
+
+# if we are working with more variables, we can add sth to improve the performance, this aims to set memory optimization parameter
+mba = apriori(cg17_dm, parameter = list(confidence = 0.5, minlen = 2, maxlen = 15, maxtime = 0, target = "rules"), appearance = list(none = c("DEAF=0", "BPHIGH4=0", "DIABETE3=0", "CHCKIDNY=0", "ASTHMA3=0", "HAVARTH3=0", "CVDCRHD4=0", "CVDINFR4=0", "CVDSTRK3=0", "CHCCOPD1=0", "CHCOCNCR=0", "BLIND=0", "X_RFBMI5=0", "X_RFSMOK3=0")), control=list(memopt=TRUE, load=FALSE))
+
+# add 1 more argument about parameter "support", decrease it from 0.1 to 0.01
+mba_s = apriori(cg17_dm, parameter = list(support=0.01, confidence = 0.5, minlen = 2, maxlen = 15, maxtime = 0, target = "rules"), appearance = list(none = c("DEAF=0", "BPHIGH4=0", "DIABETE3=0", "CHCKIDNY=0", "ASTHMA3=0", "HAVARTH3=0", "CVDCRHD4=0", "CVDINFR4=0", "CVDSTRK3=0", "CHCCOPD1=0", "CHCOCNCR=0", "BLIND=0", "X_RFBMI5=0", "X_RFSMOK3=0")), control=list(memopt=TRUE, load=FALSE))
+
+inspect(mba_s)
+# we can see some single SEX=F on the right side
+# to hone in on only "sex=f" to be on the right side of our association rule
+# rhs = "SEX=M": right hand side contains only the "SEX=M"
+ mba_mr = apriori(cg17_dm, parameter = list(support=0.01, confidence = 0.5, minlen = 2, maxlen = 15, maxtime = 0, target = "rules"), appearance = list(rhs = "SEX=M", none = c("DEAF=0", "BPHIGH4=0", "DIABETE3=0", "CHCKIDNY=0", "ASTHMA3=0", "HAVARTH3=0", "CVDCRHD4=0", "CVDINFR4=0", "CVDSTRK3=0", "CHCCOPD1=0", "CHCOCNCR=0", "BLIND=0", "X_RFBMI5=0", "X_RFSMOK3=0")), control=list(memopt=TRUE, load=FALSE))
+inspect(mba_mr)
+# only 'SEX=M' on the right hand side will be kept
+#[7]  {X_RFBMI5=1}                         => {SEX=M} 0.30326029 0.5475777  0.55382149 1.120917 2837 
+# for this line, it means the RFBMI5 happens 30% of the california male population in 2017, of our survey sample, not for the entire population
+
+# to try set different parameters for the "SEX=M" on the other side of the "=>" sign
+# only 1 association rule
+# so! just put your variables of interest on the right hand side
+
+# try the SEX=F
+mba_fr = apriori(cg17_dm, parameter = list(support=0.01, confidence = 0.5, minlen = 2, maxlen = 15, maxtime = 0, target = "rules"), appearance = list(rhs = "SEX=F", none = c("DEAF=0", "BPHIGH4=0", "DIABETE3=0", "CHCKIDNY=0", "ASTHMA3=0", "HAVARTH3=0", "CVDCRHD4=0", "CVDINFR4=0", "CVDSTRK3=0", "CHCCOPD1=0", "CHCOCNCR=0", "BLIND=0", "X_RFBMI5=0", "X_RFSMOK3=0")), control=list(memopt=TRUE, load=FALSE))
+
+# by decreasing the support value, we're trying to capture the more rare health conditions
+# also, we capture more commorbidities that occure more rarely
