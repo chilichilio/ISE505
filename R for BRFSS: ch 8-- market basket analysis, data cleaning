@@ -4,7 +4,7 @@
 # association rule mining: thing do and dont occur together
 # some conditions occur with some outcomes
 # support: if 10 occur across sample size, the proportion this item occurs
-# confidence: the probability some conditions occur together with other conditions
+# confidence: the probability the right side conditions occur when the left condition occurs
 # Apriori -> MSapriori
 # MSapriori is used for rare items and multiple support thresholds
 
