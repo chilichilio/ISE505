@@ -1,0 +1,40 @@
+# reference article: Results on mining NHANES data: A case study in evidence-based medicine
+# association rule mining also called market basket analysis
+# market basket analysis: things occur together
+# association rule mining: thing do and dont occur together
+# some conditions occur with some outcomes
+# support: if 10 occur across sample size, the proportion this item occurs
+# confidence: the probability some conditions occur together with other conditions
+# Apriori -> MSapriori
+# MSapriori is used for rare items and multiple support thresholds
+
+chooseCRANmirror()
+# change working directory
+# read the file, dm: data mining
+ca_girls17 = read.csv("ca_girls17.csv",header = TRUE)
+# load the tidyverse library
+library(tidyverse)
+glimpse(cg17_dm)
+# using select function, we can order these variables and keep only these variables
+cg17_dm = ca_girls17 %>% select(SEX, DEAF, BPHIGH4, DIABETE3, CHCKIDNY, ASTHMA3, HAVARTH3, CVDCRHD4, CVDINFR4, CVDSTRK3, CHCCOPD1, CHCOCNCR, BLIND, X_RFBMI5, X_RFSMOK3)
+glimpse(cg17_dm)
+# data cleaning, change some responses to "0" or "1"
+# change type from integer to "factor"
+cg17_dm$SEX = as.factor(recode(cg17_dm$SEX, '1' = 'M', '2' = 'F'))
+ 
+cg17_dm$DEAF = as.factor(recode(cg17_dm$DEAF, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$BPHIGH4 = as.factor(recode(cg17_dm$BPHIGH4, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$DIABETE3 = as.factor(recode(cg17_dm$DIABETE3, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$CHCKIDNY = as.factor(recode(cg17_dm$CHCKIDNY, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$ASTHMA3 = as.factor(recode(cg17_dm$ASTHMA3, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$HAVARTH3 = as.factor(recode(cg17_dm$HAVARTH3, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$CVDCRHD4 = as.factor(recode(cg17_dm$CVDCRHD4, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$CVDINFR4 = as.factor(recode(cg17_dm$CVDINFR4, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$CVDSTRK3 = as.factor(recode(cg17_dm$CVDSTRK3, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$CHCCOPD1 = as.factor(recode(cg17_dm$CHCCOPD1, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$CHCOCNCR = as.factor(recode(cg17_dm$CHCOCNCR, '1' = '1', .default = '0', .missing = '0'))
+cg17_dm$BLIND = as.factor(recode(cg17_dm$BLIND, '1' = '1', .default = '0', .missing = '0'))
+ 
+cg17_dm$X_RFBMI5 = as.factor(recode(cg17_dm$X_RFBMI5, '2' = '1', .default = '0', .missing = '0'))
+cg17_dm$X_RFSMOK3 = as.factor(recode(cg17_dm$X_RFSMOK3, '2' = '1', .default = '0', .missing = '0'))
+glimpse(cg17_dm)
