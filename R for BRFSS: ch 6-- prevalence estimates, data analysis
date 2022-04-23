@@ -1,0 +1,90 @@
+# open “Complex Sampling Weights and Preparing” file on the BRFSS, R code reference included
+# https://www.cdc.gov/brfss/annual_data/2017/pdf/Complex-Smple-Weights-Prep-Module-Data-Analysis-2017-508.pdf
+# install the package"survey"
+> install.packages("survey")
+> library(survey)
+> cg17_pe_dsgn = svydesign(id =~1, strata=~X_STSTR,weights=~X_LLCPWT,data=cg17_pe)
+> str(cg17_pe_dsgn)
+# to get the proportion of a specific factor, use the 'svymean'
+# na.rm = TRUE, remove any possible na value in the survey, though we've recoded all the NA to '0'
+> svymean(~factor(X_RFSMOK3),cg17_pe_dsgn,na.rm = TRUE)
+# now we have the mean and the standard error
+# if we want to get both the smoke and sex factor, we can install packages "srvyr"
+> install.packages("srvyr")
+# dont forget to import
+> library(srvyr)
+# there's something different between the "srvyr" and "survey"
+> cg17_pe_design = as_survey_design(.data = cg17_pe, ids="X_PSU",strata="X_STSTR",weights="X_LLCPWT")
+# %>%: pass information from the left to the right
+# we can reset our survey design and specify the data right sway
+> cg17_pe_design = cg17_pe %>% survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+# survey_mean gives us the estimation of the prevalence/ proportion
+# pip or "%>%" could be read as "then"
+# se = standard error, ci = confidence interval
+> cg17_pe_design %>% group_by(SEX,X_RFSMOK3) %>% summarize(proportion = survey_mean(vartype=c("se","ci")))
+# to get only the responses without "0/na"
+> cg17_pe_design %>% group_by(SEX,X_RFSMOK3) %>% summarize(proportion = survey_mean(vartype=c("se","ci"))) %>% filter(RFSMOK3 == 1)
+# we can get only the smokers data
+
+# to get the unweighted results of smokers
+> cg17_pe %>% count(vars = X_RFSMOK3,by = SEX) %>% filter(vars==1)
+# cbind: column bind
+> cg17_pe_design %>% group_by(SEX,X_RFSMOK3) %>% summarize(proportion = survey_mean(vartype=c("se","ci"))) %>% filter(RFSMOK3 == 1) %>% cbind(cg17_pe %>% count(vars = X_RFSMOK3,by = SEX) %>% filter(vars==1))
+# to define a funtion
+# function_name = function (argument1,argument2...)
+# since we want to know the prevalence of the previous mentioned 18 factors in the health related survey results
+# we only want to change the "X_RFSMOK3" factor
+# so, we could write a function to realize
+# function_name = function(y)(statement, where we change the X_RFSMOK3 to y)
+# so we could replace the y with the factor we expect to change later
+# we put arguments in the function parenthesis
+# function(arguments)
+
+# y = enquo(y): when y is not working in the function, we put "!!" before the y
+# there used to be a typo in the vartype
+> pe = function(y){y=enquo(y)
++ cg17_pe_design %>% group_by(SEX,!!y) %>% summarize (proportion =
++ survey_mean(vartype = c("se","ci"))) %>% filter(!!y == 1) %>%
++ cbind(cg17_pe %>% count(vars = !!y,by = SEX) %>% filter(vars == 1))}
+> pe(X_RFSMOK3)
+# I don't know why it doesn't work if it's not structured in these new lines
+
+# use 'map' function to realize the iteration
+# here just assign the table related with 19 health related factors to a variable and combine all these tables
+> a = pe(X_RFHLTH)
+> b = pe(X_PHYS14D)
+> c = pe(X_MENT14D)
+> d = pe(X_HCVU651)
+> e = pe(CHECKUP1)
+> f = pe(CHOLCHK1)
+> g = pe(X_RFSMOK3)
+> h = pe(X_RFBING5)
+> i = pe(X_TOTINDA)
+> j = pe(X_FRTLT1A)
+> k = pe(X_VEGLT1A)
+> l = pe(X_RFBMI5)
+> m = pe(DIABETE3)
+> n = pe(HAVARTH3)
+> o = pe(ADDEPEV2)
+> p = pe(BPHIGH4)
+> q = pe(TOLDHI2)
+> r = pe(CVDCRHD4)
+> s = pe(CVDSTRK3)
+# bind_rows function will bind all the above table into one
+> pe_table = bind_rows(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s)
+# show pe_table
+> pe_table
+# then we'll find only the first health factor is at the very left column, all the other health factors are listed at the end of the proportion_standard error and so on
+# to make a new column containing all the factor names
+# assign all the health variables names to 1 variable, here names appear 2 times because each variable takes 2 line
+> health_variable = c("X_RFHLTH", "X_RFHLTH", "X_PHYS14D", "X_PHYS14D", "X_MENT14D", "X_MENT14D", "X_HCVU651", "X_HCVU651", "CHECKUP1", "CHECKUP1", "CHOLCHK1", "CHOLCHK1", "X_RFSMOK3", "X_RFSMOK3", "X_RFBING5", "X_RFBING5", "X_TOTINDA", "X_TOTINDA", "X_FRTLT1A", "X_FRTLT1A", "X_VEGLT1A", "X_VEGLT1A", "X_RFMBI5", "X_RFMBI5", "DIABETE3", "DIABETE3", "HAVARTH3", "HAVARTH3", "ADDEPEV2", "ADDEPEV2", "BPHIGH4", "BPHIGH4", "TOLDHI2", "TOLDHI2", "CVDCRHD4", "CVDCRHD4", "CVDSTRK3", "CVDSTRK3")
+# then, add this health_variable to the pe_table
+> pe_table$health_variable = health_variable
+> pe_table
+# we'll see the health_variable is at the last column of the pe_table
+# then, to make a subset with expected columns
+pe_table2 = subset(pe_table,select=c(health_variable,SEX,n,proportion:proportion_upp))
+pe_table2
+# perfect!!!
+# export the table
+export(pe_table2,"pe_table2.csv")
