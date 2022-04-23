@@ -3,8 +3,12 @@
 # market basket analysis: things occur together
 # association rule mining: thing do and dont occur together
 # some conditions occur with some outcomes
+
+
 # support: if 10 occur across sample size, the proportion this item occurs
 # confidence: the probability the right side conditions occur when the left condition occurs
+reference: https://www.kdnuggets.com/2016/04/association-rules-apriori-algorithm-tutorial.html
+
 # Apriori -> MSapriori
 # MSapriori is used for rare items and multiple support thresholds
 
