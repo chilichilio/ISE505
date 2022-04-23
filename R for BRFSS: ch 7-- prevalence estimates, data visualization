@@ -1,0 +1,11 @@
+# visualization
+# function: ggplot, aes: aesthetics, fill=SEX: give us 2 bars specifying respondent's sex
+# the "+" choose the chart type we want
+ggplot(data = pe_table2,aes(x=health_variable, y=proportion,fill=SEX)) + geom_bar(stat="identity",position = position_dodge())
+# we get the first bar chart
+# to add the confidence interval lower and upper limit
+ggplot(data = pe_table2,aes(x=health_variable, y=proportion,fill=SEX)) + geom_bar(stat="identity",position = position_dodge())+ geom_errorbar(aes(ymin = proportion_low,ymax = proportion_upp),width = .2,position = position_dodge(.9))
+# we dont want x axis variables to be overlapped
+# we exchange the x,y position
+ggplot(data = pe_table2,aes(x=health_variable, y=proportion,fill=SEX)) + geom_bar(stat="identity",position = position_dodge())+ geom_errorbar(aes(ymin = proportion_low,ymax = proportion_upp),width = .2,position = position_dodge(.9)) + coord_flip()
+# if confidence intervals overlap, we can't think two columns are statistically significantly different
