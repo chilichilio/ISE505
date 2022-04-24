@@ -5,3 +5,22 @@ library(arules)
 LLCP2017 = import("LLCP2017.XPT")
 glimpse(LLCP2017)
 export(LLCP2017,"LLCP2017.csv")
+# reopen the csv file
+llcp2017 = read.csv("LLCP2017.csv")
+# https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf
+# filter data for CA
+ca2017 = filter(llcp2017,X_STATE ==6)
+# keep "tobacco use" related indicators
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "SMOKE100", "SMOKDAY2", "STOPSMK2", "LASTSMK2", "USENOW3", "ECIGARET", "ECIGNOW")
+ca2017_tu = ca2017[,keep_var]
+
+# check how many missing answers under each indicator
+colSums(is.na(ca2017))
+# check if there's indicator without any answers
+colSums(is.na(ca2017_tu)) == 9358
+# if TRUE, assign these indicators to the drop_var variable
+drop_var = which(colSums(is.na(ca2017)) == nrow(ca2017))
+# eliminate these no-value data
+ca2017drop_var = ca2017[,-drop_var]
+
+
