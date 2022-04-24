@@ -1,1 +1,27 @@
-
+# how many people have multiple disease conditions, and what its distribution like across the population
+# to count comorbidites of each column/individual
+#since our variables have been set to factors, we could export and import
+# export and import function should first load the rio
+library(rio)
+export(cg17_dm,"cg17_dm.csv")
+cg17_dm = import("cg17_dm.csv")
+glimpse(cg17_dm)
+# now we'll see all our health variables are integers not factors
+cg17_dm$comorbid = rowSums(cg17_dm[,2:15])
+glimpse(cg17_dm)
+# since we're still looking at the difference between males and females, first seprerate the table according to the gender
+f = cg17_dm %>% filter(SEX == "F")
+m = cg17_dm %>% filter(SEX == "M")
+# to get the mean value of comorbidities for each gender group
+mean(f$comorbid)
+mean(m$comorbid)
+median(f$comorbid)
+median(m$comorbid)
+# in general, males have more comorbidities than females
+#to see the histogram
+hist(f$comorbid)
+hist(m$comorbid)
+# however, more diverse comorbidities with female
+# so, though male have higher average of comorbidities, female represent a more complicated situation of comorbidities
+# it would be easier and make recommendations for males
+# market basket analysis to understand data better and explore more rare health conditions
