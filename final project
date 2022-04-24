@@ -1,0 +1,7 @@
+chooseCRANmirror()
+library(rio)
+library(tidyverse)
+library(arules)
+LLCP2017 = import("LLCP2017.XPT")
+glimpse(LLCP2017)
+export(LLCP2017,"LLCP2017.csv")
