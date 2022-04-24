@@ -6,12 +6,14 @@ LLCP2017 = import("LLCP2017.XPT")
 glimpse(LLCP2017)
 export(LLCP2017,"LLCP2017.csv")
 # reopen the csv file
-llcp2017 = read.csv("LLCP2017.csv")
+llcp2017 = read.csv("LLCP2017.csv",header = TRUE)
 # https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf
 # filter data for CA
 ca2017 = filter(llcp2017,X_STATE ==6)
 # keep "tobacco use" related indicators
-keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "SMOKE100", "SMOKDAY2", "STOPSMK2", "LASTSMK2", "USENOW3", "ECIGARET", "ECIGNOW")
+#keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "FMONTH", "SMOKE100", "SMOKDAY2", "STOPSMK2", "LASTSMK2", "USENOW3", "ECIGARET", "ECIGNOW")
+# too much missing data so: "X_PSU", "X_LLCPWT", "X_STSTR", "FMONTH", "SMOKE100", "USENOW3", "ECIGARET"
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "FMONTH", "SMOKE100", "USENOW3", "ECIGARET")
 ca2017_tu = ca2017[,keep_var]
 
 # check how many missing answers under each indicator
@@ -23,4 +25,28 @@ drop_var = which(colSums(is.na(ca2017)) == nrow(ca2017))
 # eliminate these no-value data
 ca2017drop_var = ca2017[,-drop_var]
 
+#to recode
+# for SMOKE100, Smoked at Least 100 Cigarettes,1 = yes; 2 = no; 7, 9, BLANK to 0
+# USENOW3	Use of Smokeless Tobacco Products 	1 = every day; 2 = some days; 3 = not at all, 7, 9, BLANK to 0
+# ECIGARET	Ever used an e-cigarette? 	1 = yes; 2 = no; 7, 9, BLANK to 0
+ca2017_tu$SMOKE100 = as.factor(recode(ca2017_tu$SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0'))
+ca2017_tu$USENOW3 = as.factor(recode(ca2017_tu$USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0'))
+ca2017_tu$ECIGARET = as.factor(recode(ca2017_tu$ECIGARET, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0'))
 
+# to arrange data in a increasing order by month
+install.packages("dplyr")
+library(dplyr)
+ca2017_tubm = arrange(ca2017_tu, FMONTH)
+# export the data table
+export(ca2017_tubm,"ca2017_tubm.csv")
+
+# mean se ci
+ca17 = read.csv("ca2017_tubm.csv",header = TRUE)
+ca17_pe = ca17 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+pe = function(y) {y=enquo(y)
++ ca17_pe %>% group_by(FMONTH,!!y) %>% summarize (proportion =
++ survey_mean(vartype = c("se","ci")))}
+# use the function
+a = pe(SMOKE100)
+b = pe(USENOW3)
+c = pe(ECIGARET)
