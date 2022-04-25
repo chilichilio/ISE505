@@ -1,15 +1,18 @@
 chooseCRANmirror()
 library(rio)
 library(tidyverse)
+
+
 LLCP2017 = import("LLCP2017.XPT")
 glimpse(LLCP2017)
 export(LLCP2017,"LLCP2017.csv")
 llcp2017 = read.csv("LLCP2017.csv",header = TRUE)
 # filter CA, DC, GA
 all2017 = filter(llcp2017,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
-keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "IMONTH", "SMOKE100", "USENOW3", "ECIGARET")
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "IMONTH", "SMOKE100", "SMOKDAY2", "USENOW3", "ECIGARET")
 all2017_tu = all2017[,keep_var]
 all2017_tu $SMOKE100 = recode(all2017_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2017_tu $SMOKDAY2 = recode(all2017_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
 all2017_tu $USENOW3 = recode(all2017_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
 all2017_tu $ECIGARET = recode(all2017_tu $ECIGARET, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
 
@@ -50,17 +53,23 @@ survey_mean(vartype = c("se","ci")))}
 ca1 = cape(SMOKE100)
 dc1 = dcpe(SMOKE100)
 ga1 = gape(SMOKE100)
-ca2 = cape(USENOW3)
-dc2 = dcpe(USENOW3)
-ga2 = gape(USENOW3)
-ca3 = cape(ECIGARET)
-dc3 = dcpe(ECIGARET)
-ga3 = gape(ECIGARET)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+ca4 = cape(ECIGARET)
+dc4 = dcpe(ECIGARET)
+ga4 = gape(ECIGARET)
 
 pe_table1 = bind_rows(ca1,dc1,ga1)
 pe_table2 = bind_rows(ca2,dc2,ga2)
 pe_table3 = bind_rows(ca3,dc3,ga3)
+pe_table4 = bind_rows(ca4,dc4,ga4)
+
 
 export(pe_table1,"pe1.csv")
 export(pe_table2,"pe2.csv")
 export(pe_table3,"pe3.csv")
+export(pe_table4,"pe4.csv")
