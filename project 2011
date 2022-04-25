@@ -1,3 +1,4 @@
+#2011
 chooseCRANmirror()
 library(rio)
 library(tidyverse)
@@ -9,13 +10,16 @@ llcp2011 = read.csv("LLCP2011.csv",header = TRUE)
 all2011 = filter(llcp2011,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
 keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3")
 all2011_tu = all2011[,keep_var]
+
 all2011_tu $SMOKE100 = recode(all2011_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
 all2011_tu $SMOKDAY2 = recode(all2011_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
 all2011_tu $USENOW3 = recode(all2011_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
 
-ca2011 = filter(all2011, X_STATE == 6)
-dc2011 = filter(all2011, X_STATE == 11)
-ga2011 = filter(all2011, X_STATE == 13)
+
+
+ca2011 = filter(all2011_tu, X_STATE == 6)
+dc2011 = filter(all2011_tu, X_STATE == 11)
+ga2011 = filter(all2011_tu, X_STATE == 13)
 
 export(ca2011,"ca2011.csv")
 export(dc2011,"dc2011.csv")
@@ -62,3 +66,525 @@ export(pe_table1,"pe1.csv")
 export(pe_table2,"pe2.csv")
 export(pe_table3,"pe3.csv")
 
+#2012
+chooseCRANmirror()
+library(rio)
+library(tidyverse)
+
+
+LLCP2012 = import("LLCP2012.XPT")
+export(LLCP2012,"LLCP2012.csv")
+llcp2012 = read.csv("LLCP2012.csv",header = TRUE)
+all2012 = filter(llcp2012,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3")
+all2012_tu = all2012[,keep_var]
+
+all2012_tu $SMOKE100 = recode(all2012_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2012_tu $SMOKDAY2 = recode(all2012_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2012_tu $USENOW3 = recode(all2012_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+
+
+
+ca2012 = filter(all2012_tu, X_STATE == 6)
+dc2012 = filter(all2012_tu, X_STATE == 11)
+ga2012 = filter(all2012_tu, X_STATE == 13)
+
+export(ca2012,"ca2012.csv")
+export(dc2012,"dc2012.csv")
+export(ga2012,"ga2012.csv")
+
+ca2012 = read.csv("ca2012.csv",header = TRUE)
+dc2012 = read.csv("dc2012.csv",header = TRUE)
+ga2012 = read.csv("ga2012.csv",header = TRUE)
+
+library(srvyr)
+
+ca12_pe = ca2012 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc12_pe = dc2012 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga12_pe = ga2012 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca12_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc12_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga12_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+
+#2013
+chooseCRANmirror()
+
+library(rio)
+library(tidyverse)
+LLCP2013 = import("LLCP2013.XPT")
+export(LLCP2013,"LLCP2013.csv")
+llcp2013 = read.csv("LLCP2013.csv",header = TRUE)
+
+all2013 = filter(llcp2013,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3")
+all2013_tu = all2013[,keep_var]
+
+all2013_tu $SMOKE100 = recode(all2013_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2013_tu $SMOKDAY2 = recode(all2013_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2013_tu $USENOW3 = recode(all2013_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+ca2013 = filter(all2013_tu, X_STATE == 6)
+dc2013 = filter(all2013_tu, X_STATE == 11)
+ga2013 = filter(all2013_tu, X_STATE == 13)
+export(ca2013,"ca2013.csv")
+export(dc2013,"dc2013.csv")
+export(ga2013,"ga2013.csv")
+ca2013 = read.csv("ca2013.csv",header = TRUE)
+dc2013 = read.csv("dc2013.csv",header = TRUE)
+ga2013 = read.csv("ga2013.csv",header = TRUE)
+
+library(srvyr)
+
+ca13_pe = ca2013 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc13_pe = dc2013 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga13_pe = ga2013 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca13_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc13_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga13_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+
+#2014
+chooseCRANmirror()
+
+library(rio)
+library(tidyverse)
+LLCP2014 = import("LLCP2014.XPT")
+export(LLCP2014,"LLCP2014.csv")
+llcp2014 = read.csv("LLCP2014.csv",header = TRUE)
+all2014 = filter(llcp2014,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3")
+all2014_tu = all2014[,keep_var]
+
+all2014_tu $SMOKE100 = recode(all2014_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2014_tu $SMOKDAY2 = recode(all2014_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2014_tu $USENOW3 = recode(all2014_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+ca2014 = filter(all2014_tu, X_STATE == 6)
+dc2014 = filter(all2014_tu, X_STATE == 11)
+ga2014 = filter(all2014_tu, X_STATE == 13)
+export(ca2014,"ca2014.csv")
+export(dc2014,"dc2014.csv")
+export(ga2014,"ga2014.csv")
+ca2014 = read.csv("ca2014.csv",header = TRUE)
+dc2014 = read.csv("dc2014.csv",header = TRUE)
+ga2014 = read.csv("ga2014.csv",header = TRUE)
+
+library(srvyr)
+
+ca14_pe = ca2014 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc14_pe = dc2014 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga14_pe = ga2014 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca14_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc14_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga14_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+
+
+
+#2015
+chooseCRANmirror()
+
+library(rio)
+library(tidyverse)
+LLCP2015 = import("LLCP2015.XPT")
+export(LLCP2015,"LLCP2015.csv")
+llcp2015 = read.csv("LLCP2015.csv",header = TRUE)
+all2015 = filter(llcp2015,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3")
+all2015_tu = all2015[,keep_var]
+
+all2015_tu $SMOKE100 = recode(all2015_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2015_tu $SMOKDAY2 = recode(all2015_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2015_tu $USENOW3 = recode(all2015_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+ca2015 = filter(all2015_tu, X_STATE == 6)
+dc2015 = filter(all2015_tu, X_STATE == 11)
+ga2015 = filter(all2015_tu, X_STATE == 13)
+export(ca2015,"ca2015.csv")
+export(dc2015,"dc2015.csv")
+export(ga2015,"ga2015.csv")
+ca2015 = read.csv("ca2015.csv",header = TRUE)
+dc2015 = read.csv("dc2015.csv",header = TRUE)
+ga2015 = read.csv("ga2015.csv",header = TRUE)
+
+library(srvyr)
+
+ca14_pe = ca2015 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc14_pe = dc2015 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga14_pe = ga2015 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca14_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc14_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga14_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+
+# 2016
+# ecigarette
+chooseCRANmirror()
+
+library(rio)
+library(tidyverse)
+LLCP2016 = import("LLCP2016.XPT")
+export(LLCP2016,"LLCP2016.csv")
+llcp2016 = read.csv("LLCP2016.csv",header = TRUE)
+all2016 = filter(llcp2016,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3" , "ECIGARET")
+all2016_tu = all2016[,keep_var]
+
+all2016_tu $SMOKE100 = recode(all2016_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2016_tu $SMOKDAY2 = recode(all2016_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2016_tu $USENOW3 = recode(all2016_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2016_tu $ECIGARET = recode(all2016_tu $ECIGARET, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+ca2016 = filter(all2016_tu, X_STATE == 6)
+dc2016 = filter(all2016_tu, X_STATE == 11)
+ga2016 = filter(all2016_tu, X_STATE == 13)
+export(ca2016,"ca2016.csv")
+export(dc2016,"dc2016.csv")
+export(ga2016,"ga2016.csv")
+ca2016 = read.csv("ca2016.csv",header = TRUE)
+dc2016 = read.csv("dc2016.csv",header = TRUE)
+ga2016 = read.csv("ga2016.csv",header = TRUE)
+
+library(srvyr)
+
+ca16_pe = ca2016 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc16_pe = dc2016 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga16_pe = ga2016 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca16_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc16_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga16_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+ca4 = cape(ECIGARET)
+dc4 = dcpe(ECIGARET)
+ga4 = gape(ECIGARET)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+pe_table4 = bind_rows(ca4,dc4,ga4)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+export(pe_table4,"pe4.csv")
+
+#2017
+chooseCRANmirror()
+
+library(rio)
+library(tidyverse)
+LLCP2017 = import("LLCP2017.XPT")
+export(LLCP2017,"LLCP2017.csv")
+llcp2017 = read.csv("LLCP2017.csv",header = TRUE)
+all2017 = filter(llcp2017,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3" , "ECIGARET")
+all2017_tu = all2017[,keep_var]
+
+all2017_tu $SMOKE100 = recode(all2017_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2017_tu $SMOKDAY2 = recode(all2017_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2017_tu $USENOW3 = recode(all2017_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2017_tu $ECIGARET = recode(all2017_tu $ECIGARET, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+ca2017 = filter(all2017_tu, X_STATE == 6)
+dc2017 = filter(all2017_tu, X_STATE == 11)
+ga2017 = filter(all2017_tu, X_STATE == 13)
+export(ca2017,"ca2017.csv")
+export(dc2017,"dc2017.csv")
+export(ga2017,"ga2017.csv")
+ca2017 = read.csv("ca2017.csv",header = TRUE)
+dc2017 = read.csv("dc2017.csv",header = TRUE)
+ga2017 = read.csv("ga2017.csv",header = TRUE)
+
+library(srvyr)
+
+ca16_pe = ca2017 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc16_pe = dc2017 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga16_pe = ga2017 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca16_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc16_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga16_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+ca4 = cape(ECIGARET)
+dc4 = dcpe(ECIGARET)
+ga4 = gape(ECIGARET)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+pe_table4 = bind_rows(ca4,dc4,ga4)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+export(pe_table4,"pe4.csv")
+
+#2018
+chooseCRANmirror()
+
+library(rio)
+library(tidyverse)
+LLCP2018 = import("LLCP2018.XPT")
+export(LLCP2018,"LLCP2018.csv")
+llcp2018 = read.csv("LLCP2018.csv",header = TRUE)
+all2018 = filter(llcp2018,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3" , "ECIGARET")
+all2018_tu = all2018[,keep_var]
+
+all2018_tu $SMOKE100 = recode(all2018_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2018_tu $SMOKDAY2 = recode(all2018_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2018_tu $USENOW3 = recode(all2018_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2018_tu $ECIGARET = recode(all2018_tu $ECIGARET, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+ca2018 = filter(all2018_tu, X_STATE == 6)
+dc2018 = filter(all2018_tu, X_STATE == 11)
+ga2018 = filter(all2018_tu, X_STATE == 13)
+export(ca2018,"ca2018.csv")
+export(dc2018,"dc2018.csv")
+export(ga2018,"ga2018.csv")
+ca2018 = read.csv("ca2018.csv",header = TRUE)
+dc2018 = read.csv("dc2018.csv",header = TRUE)
+ga2018 = read.csv("ga2018.csv",header = TRUE)
+
+library(srvyr)
+
+ca18_pe = ca2018 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc18_pe = dc2018 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga18_pe = ga2018 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca18_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc18_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga18_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+ca4 = cape(ECIGARET)
+dc4 = dcpe(ECIGARET)
+ga4 = gape(ECIGARET)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+pe_table4 = bind_rows(ca4,dc4,ga4)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+export(pe_table4,"pe4.csv")
+
+#2019, 2020
+chooseCRANmirror()
+library(rio)
+library(tidyverse)
+LLCP2020 = import("LLCP2020.XPT")
+export(LLCP2020,"LLCP2020.csv")
+llcp2020 = read.csv("LLCP2020.csv",header = TRUE)
+all2020 = filter(llcp2020,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3")
+all2020_tu = all2020[,keep_var]
+
+all2020_tu $SMOKE100 = recode(all2020_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2020_tu $SMOKDAY2 = recode(all2020_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2020_tu $USENOW3 = recode(all2020_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+ca2020 = filter(all2020_tu, X_STATE == 6)
+dc2020 = filter(all2020_tu, X_STATE == 11)
+ga2020 = filter(all2020_tu, X_STATE == 13)
+export(ca2020,"ca2020.csv")
+export(dc2020,"dc2020.csv")
+export(ga2020,"ga2020.csv")
+ca2020 = read.csv("ca2020.csv",header = TRUE)
+dc2020 = read.csv("dc2020.csv",header = TRUE)
+ga2020 = read.csv("ga2020.csv",header = TRUE)
+
+library(srvyr)
+
+ca20_pe = ca2020 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc20_pe = dc2020 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga20_pe = ga2020 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca20_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc20_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga20_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
