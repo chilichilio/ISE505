@@ -1,0 +1,510 @@
+chooseCRANmirror()
+library(rio)
+library(tidyverse)
+# read data
+llcp2011 = read.csv("LLCP2011.csv",header = TRUE)
+llcp2012 = read.csv("LLCP2012.csv",header = TRUE)
+llcp2013 = read.csv("LLCP2013.csv",header = TRUE)
+llcp2014 = read.csv("LLCP2014.csv",header = TRUE)
+llcp2015 = read.csv("LLCP2015.csv",header = TRUE)
+llcp2016 = read.csv("LLCP2016.csv",header = TRUE)
+llcp2017 = read.csv("LLCP2017.csv",header = TRUE)
+llcp2018 = read.csv("LLCP2018.csv",header = TRUE)
+llcp2019 = read.csv("LLCP2019.csv",header = TRUE)
+llcp2020 = read.csv("LLCP2020.csv",header = TRUE)
+# filter target states
+all2011 = filter(llcp2011,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+all2012 = filter(llcp2012,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+all2013 = filter(llcp2013,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+all2014 = filter(llcp2014,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+all2015 = filter(llcp2015,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+all2016 = filter(llcp2016,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+all2017 = filter(llcp2017,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+all2018 = filter(llcp2018,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+all2019 = filter(llcp2019,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+all2020 = filter(llcp2020,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+
+export(all2011,"all2011.csv")
+export(all2012,"all2012.csv")
+export(all2013,"all2013.csv")
+export(all2014,"all2014.csv")
+export(all2015,"all2015.csv")
+export(all2016,"all2016.csv")
+export(all2017,"all2017.csv")
+export(all2018,"all2018.csv")
+export(all2019,"all2019.csv")
+export(all2020,"all2020.csv")
+
+#
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "IYEAR", "SMOKE100", "SMOKDAY2", "USENOW3")
+all2011_tu = all2011[,keep_var]
+all2012_tu = all2012[,keep_var]
+all2013_tu = all2013[,keep_var]
+all2014_tu = all2014[,keep_var]
+all2015_tu = all2015[,keep_var]
+all2016_tu = all2016[,keep_var]
+all2017_tu = all2017[,keep_var]
+all2018_tu = all2018[,keep_var]
+all2019_tu = all2019[,keep_var]
+all2020_tu = all2020[,keep_var]
+
+#
+all2011_tu $SMOKE100 = recode(all2011_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2011_tu $SMOKDAY2 = recode(all2011_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2011_tu $USENOW3 = recode(all2011_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2012_tu $SMOKE100 = recode(all2012_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2012_tu $SMOKDAY2 = recode(all2012_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2012_tu $USENOW3 = recode(all2012_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2013_tu $SMOKE100 = recode(all2013_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2013_tu $SMOKDAY2 = recode(all2013_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2013_tu $USENOW3 = recode(all2013_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2014_tu $SMOKE100 = recode(all2014_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2014_tu $SMOKDAY2 = recode(all2014_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2014_tu $USENOW3 = recode(all2014_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2015_tu $SMOKE100 = recode(all2015_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2015_tu $SMOKDAY2 = recode(all2015_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2015_tu $USENOW3 = recode(all2015_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2016_tu $SMOKE100 = recode(all2016_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2016_tu $SMOKDAY2 = recode(all2016_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2016_tu $USENOW3 = recode(all2016_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2017_tu $SMOKE100 = recode(all2017_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2017_tu $SMOKDAY2 = recode(all2017_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2017_tu $USENOW3 = recode(all2017_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2018_tu $SMOKE100 = recode(all2018_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2018_tu $SMOKDAY2 = recode(all2018_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2018_tu $USENOW3 = recode(all2018_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2019_tu $SMOKE100 = recode(all2019_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2019_tu $SMOKDAY2 = recode(all2019_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2019_tu $USENOW3 = recode(all2019_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2020_tu $SMOKE100 = recode(all2020_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2020_tu $SMOKDAY2 = recode(all2020_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2020_tu $USENOW3 = recode(all2020_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+
+#
+ca2011 = filter(all2011_tu, X_STATE == 6)
+dc2011 = filter(all2011_tu, X_STATE == 11)
+ga2011 = filter(all2011_tu, X_STATE == 13)
+ca2012 = filter(all2012_tu, X_STATE == 6)
+dc2012 = filter(all2012_tu, X_STATE == 11)
+ga2012 = filter(all2012_tu, X_STATE == 13)
+ca2013 = filter(all2013_tu, X_STATE == 6)
+dc2013 = filter(all2013_tu, X_STATE == 11)
+ga2013 = filter(all2013_tu, X_STATE == 13)
+ca2014 = filter(all2014_tu, X_STATE == 6)
+dc2014 = filter(all2014_tu, X_STATE == 11)
+ga2014 = filter(all2014_tu, X_STATE == 13)
+ca2015 = filter(all2015_tu, X_STATE == 6)
+dc2015 = filter(all2015_tu, X_STATE == 11)
+ga2015 = filter(all2015_tu, X_STATE == 13)
+ca2016 = filter(all2016_tu, X_STATE == 6)
+dc2016 = filter(all2016_tu, X_STATE == 11)
+ga2016 = filter(all2016_tu, X_STATE == 13)
+ca2017 = filter(all2017_tu, X_STATE == 6)
+dc2017 = filter(all2017_tu, X_STATE == 11)
+ga2017 = filter(all2017_tu, X_STATE == 13)
+ca2018 = filter(all2018_tu, X_STATE == 6)
+dc2018 = filter(all2018_tu, X_STATE == 11)
+ga2018 = filter(all2018_tu, X_STATE == 13)
+ca2019 = filter(all2019_tu, X_STATE == 6)
+dc2019 = filter(all2019_tu, X_STATE == 11)
+ga2019 = filter(all2019_tu, X_STATE == 13)
+ca2020 = filter(all2020_tu, X_STATE == 6)
+dc2020 = filter(all2020_tu, X_STATE == 11)
+ga2020 = filter(all2020_tu, X_STATE == 13)
+
+export(ca2011,"ca2011.csv")
+export(dc2011,"dc2011.csv")
+export(ga2011,"ga2011.csv")
+export(ca2012,"ca2012.csv")
+export(dc2012,"dc2012.csv")
+export(ga2012,"ga2012.csv")
+export(ca2013,"ca2013.csv")
+export(dc2013,"dc2013.csv")
+export(ga2013,"ga2013.csv")
+export(ca2014,"ca2014.csv")
+export(dc2014,"dc2014.csv")
+export(ga2014,"ga2014.csv")
+export(ca2015,"ca2015.csv")
+export(dc2015,"dc2015.csv")
+export(ga2015,"ga2015.csv")
+export(ca2016,"ca2016.csv")
+export(dc2016,"dc2016.csv")
+export(ga2016,"ga2016.csv")
+export(ca2017,"ca2017.csv")
+export(dc2017,"dc2017.csv")
+export(ga2017,"ga2017.csv")
+export(ca2018,"ca2018.csv")
+export(dc2018,"dc2018.csv")
+export(ga2018,"ga2018.csv")
+export(ca2019,"ca2019.csv")
+export(dc2019,"dc2019.csv")
+export(ga2019,"ga2019.csv")
+export(ca2020,"ca2020.csv")
+export(dc2020,"dc2020.csv")
+export(ga2020,"ga2020.csv")
+
+#
+ca2011 = read.csv("ca2011.csv",header = TRUE)
+dc2011 = read.csv("dc2011.csv",header = TRUE)
+ga2011 = read.csv("ga2011.csv",header = TRUE)
+ca2012 = read.csv("ca2012.csv",header = TRUE)
+dc2012 = read.csv("dc2012.csv",header = TRUE)
+ga2012 = read.csv("ga2012.csv",header = TRUE)
+ca2013 = read.csv("ca2013.csv",header = TRUE)
+dc2013 = read.csv("dc2013.csv",header = TRUE)
+ga2013 = read.csv("ga2013.csv",header = TRUE)
+ca2014 = read.csv("ca2014.csv",header = TRUE)
+dc2014 = read.csv("dc2014.csv",header = TRUE)
+ga2014 = read.csv("ga2014.csv",header = TRUE)
+ca2015 = read.csv("ca2015.csv",header = TRUE)
+dc2015 = read.csv("dc2015.csv",header = TRUE)
+ga2015 = read.csv("ga2015.csv",header = TRUE)
+ca2016 = read.csv("ca2016.csv",header = TRUE)
+dc2016 = read.csv("dc2016.csv",header = TRUE)
+ga2016 = read.csv("ga2016.csv",header = TRUE)
+ca2017 = read.csv("ca2017.csv",header = TRUE)
+dc2017 = read.csv("dc2017.csv",header = TRUE)
+ga2017 = read.csv("ga2017.csv",header = TRUE)
+ca2018 = read.csv("ca2018.csv",header = TRUE)
+dc2018 = read.csv("dc2018.csv",header = TRUE)
+ga2018 = read.csv("ga2018.csv",header = TRUE)
+ca2019 = read.csv("ca2019.csv",header = TRUE)
+dc2019 = read.csv("dc2019.csv",header = TRUE)
+ga2019 = read.csv("ga2019.csv",header = TRUE)
+ca2020 = read.csv("ca2020.csv",header = TRUE)
+dc2020 = read.csv("dc2020.csv",header = TRUE)
+ga2020 = read.csv("ga2020.csv",header = TRUE)
+
+#
+library(srvyr)
+
+#
+ca11_pe = ca2011 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc11_pe = dc2011 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga11_pe = ga2011 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca12_pe = ca2012 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc12_pe = dc2012 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga12_pe = ga2012 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca13_pe = ca2013 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc13_pe = dc2013 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga13_pe = ga2013 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca14_pe = ca2014 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc14_pe = dc2014 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga14_pe = ga2014 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca15_pe = ca2015 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc15_pe = dc2015 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga15_pe = ga2015 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca16_pe = ca2016 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc16_pe = dc2016 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga16_pe = ga2016 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca17_pe = ca2017 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc17_pe = dc2017 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga17_pe = ga2017 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca18_pe = ca2018 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc18_pe = dc2018 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga18_pe = ga2018 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca19_pe = ca2019 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc19_pe = dc2019 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga19_pe = ga2019 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca20_pe = ca2020 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc20_pe = dc2020 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga20_pe = ga2020 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+#
+cape11 = function(y) {y=enquo(y)
+ca11_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe11 = function(y) {y=enquo(y)
+dc11_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape11 = function(y) {y=enquo(y)
+ga11_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+cape12 = function(y) {y=enquo(y)
+ca12_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe12 = function(y) {y=enquo(y)
+dc12_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape12 = function(y) {y=enquo(y)
+ga12_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+cape13 = function(y) {y=enquo(y)
+ca13_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe13 = function(y) {y=enquo(y)
+dc13_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape13 = function(y) {y=enquo(y)
+ga13_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+cape14 = function(y) {y=enquo(y)
+ca14_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe14 = function(y) {y=enquo(y)
+dc14_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape14 = function(y) {y=enquo(y)
+ga14_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+cape15 = function(y) {y=enquo(y)
+ca15_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe15 = function(y) {y=enquo(y)
+dc15_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape15 = function(y) {y=enquo(y)
+ga15_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+cape16 = function(y) {y=enquo(y)
+ca16_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe16 = function(y) {y=enquo(y)
+dc16_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape16 = function(y) {y=enquo(y)
+ga16_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+cape17 = function(y) {y=enquo(y)
+ca17_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe17 = function(y) {y=enquo(y)
+dc17_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape17 = function(y) {y=enquo(y)
+ga17_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+cape18 = function(y) {y=enquo(y)
+ca18_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe18 = function(y) {y=enquo(y)
+dc18_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape18 = function(y) {y=enquo(y)
+ga18_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+cape19 = function(y) {y=enquo(y)
+ca19_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe19 = function(y) {y=enquo(y)
+dc19_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape19 = function(y) {y=enquo(y)
+ga19_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+cape20 = function(y) {y=enquo(y)
+ca20_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe20 = function(y) {y=enquo(y)
+dc20_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape20 = function(y) {y=enquo(y)
+ga20_pe %>% group_by(IYEAR,X_STATE,!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+
+#
+ca111 = cape11(SMOKE100)
+dc111 = dcpe11(SMOKE100)
+ga111 = gape11(SMOKE100)
+ca112 = cape11(SMOKDAY2)
+dc112 = dcpe11(SMOKDAY2)
+ga112 = gape11(SMOKDAY2)
+ca113 = cape11(USENOW3)
+dc113 = dcpe11(USENOW3)
+ga113 = gape11(USENOW3)
+ca121 = cape12(SMOKE100)
+dc121 = dcpe12(SMOKE100)
+ga121 = gape12(SMOKE100)
+ca122 = cape12(SMOKDAY2)
+dc122 = dcpe12(SMOKDAY2)
+ga122 = gape12(SMOKDAY2)
+ca123 = cape12(USENOW3)
+dc123 = dcpe12(USENOW3)
+ga123 = gape12(USENOW3)
+ca131 = cape13(SMOKE100)
+dc131 = dcpe13(SMOKE100)
+ga131 = gape13(SMOKE100)
+ca132 = cape13(SMOKDAY2)
+dc132 = dcpe13(SMOKDAY2)
+ga132 = gape13(SMOKDAY2)
+ca133 = cape13(USENOW3)
+dc133 = dcpe13(USENOW3)
+ga133 = gape13(USENOW3)
+ca141 = cape14(SMOKE100)
+dc141 = dcpe14(SMOKE100)
+ga141 = gape14(SMOKE100)
+ca142 = cape14(SMOKDAY2)
+dc142 = dcpe14(SMOKDAY2)
+ga142 = gape14(SMOKDAY2)
+ca143 = cape14(USENOW3)
+dc143 = dcpe14(USENOW3)
+ga143 = gape14(USENOW3)
+ca151 = cape15(SMOKE100)
+dc151 = dcpe15(SMOKE100)
+ga151 = gape15(SMOKE100)
+ca152 = cape15(SMOKDAY2)
+dc152 = dcpe15(SMOKDAY2)
+ga152 = gape15(SMOKDAY2)
+ca153 = cape15(USENOW3)
+dc153 = dcpe15(USENOW3)
+ga153 = gape15(USENOW3)
+ca161 = cape16(SMOKE100)
+dc161 = dcpe16(SMOKE100)
+ga161 = gape16(SMOKE100)
+ca162 = cape16(SMOKDAY2)
+dc162 = dcpe16(SMOKDAY2)
+ga162 = gape16(SMOKDAY2)
+ca163 = cape16(USENOW3)
+dc163 = dcpe16(USENOW3)
+ga163 = gape16(USENOW3)
+ca171 = cape17(SMOKE100)
+dc171 = dcpe17(SMOKE100)
+ga171 = gape17(SMOKE100)
+ca172 = cape17(SMOKDAY2)
+dc172 = dcpe17(SMOKDAY2)
+ga172 = gape17(SMOKDAY2)
+ca173 = cape17(USENOW3)
+dc173 = dcpe17(USENOW3)
+ga173 = gape17(USENOW3)
+ca181 = cape18(SMOKE100)
+dc181 = dcpe18(SMOKE100)
+ga181 = gape18(SMOKE100)
+ca182 = cape18(SMOKDAY2)
+dc182 = dcpe18(SMOKDAY2)
+ga182 = gape18(SMOKDAY2)
+ca183 = cape18(USENOW3)
+dc183 = dcpe18(USENOW3)
+ga183 = gape18(USENOW3)
+ca191 = cape19(SMOKE100)
+dc191 = dcpe19(SMOKE100)
+ga191 = gape19(SMOKE100)
+ca192 = cape19(SMOKDAY2)
+dc192 = dcpe19(SMOKDAY2)
+ga192 = gape19(SMOKDAY2)
+ca193 = cape19(USENOW3)
+dc193 = dcpe19(USENOW3)
+ga193 = gape19(USENOW3)
+ca201 = cape20(SMOKE100)
+dc201 = dcpe20(SMOKE100)
+ga201 = gape20(SMOKE100)
+ca202 = cape20(SMOKDAY2)
+dc202 = dcpe20(SMOKDAY2)
+ga202 = gape20(SMOKDAY2)
+ca203 = cape20(USENOW3)
+dc203 = dcpe20(USENOW3)
+ga203 = gape20(USENOW3)
+
+#
+pe_table111 = bind_rows(ca111,dc111,ga111)
+pe_table112 = bind_rows(ca112,dc112,ga112)
+pe_table113 = bind_rows(ca113,dc113,ga113)
+pe_table121 = bind_rows(ca121,dc121,ga121)
+pe_table122 = bind_rows(ca122,dc122,ga122)
+pe_table123 = bind_rows(ca123,dc123,ga123)
+pe_table131 = bind_rows(ca131,dc131,ga131)
+pe_table132 = bind_rows(ca132,dc132,ga132)
+pe_table133 = bind_rows(ca133,dc133,ga133)
+pe_table141 = bind_rows(ca141,dc141,ga141)
+pe_table142 = bind_rows(ca142,dc142,ga142)
+pe_table143 = bind_rows(ca143,dc143,ga143)
+pe_table151 = bind_rows(ca151,dc151,ga151)
+pe_table152 = bind_rows(ca152,dc152,ga152)
+pe_table153 = bind_rows(ca153,dc153,ga153)
+pe_table161 = bind_rows(ca161,dc161,ga161)
+pe_table162 = bind_rows(ca162,dc162,ga162)
+pe_table163 = bind_rows(ca163,dc163,ga163)
+pe_table171 = bind_rows(ca171,dc171,ga171)
+pe_table172 = bind_rows(ca172,dc172,ga172)
+pe_table173 = bind_rows(ca173,dc173,ga173)
+pe_table181 = bind_rows(ca181,dc181,ga181)
+pe_table182 = bind_rows(ca182,dc182,ga182)
+pe_table183 = bind_rows(ca183,dc183,ga183)
+pe_table191 = bind_rows(ca191,dc191,ga191)
+pe_table192 = bind_rows(ca192,dc192,ga192)
+pe_table193 = bind_rows(ca193,dc193,ga193)
+pe_table201 = bind_rows(ca201,dc201,ga201)
+pe_table202 = bind_rows(ca202,dc202,ga202)
+pe_table203 = bind_rows(ca203,dc203,ga203)
+
+#
+export(pe_table111,"pe111.csv")
+export(pe_table112,"pe112.csv")
+export(pe_table113,"pe113.csv")
+export(pe_table121,"pe121.csv")
+export(pe_table122,"pe122.csv")
+export(pe_table123,"pe123.csv")
+export(pe_table131,"pe131.csv")
+export(pe_table132,"pe132.csv")
+export(pe_table133,"pe133.csv")
+export(pe_table141,"pe141.csv")
+export(pe_table142,"pe142.csv")
+export(pe_table143,"pe143.csv")
+export(pe_table151,"pe151.csv")
+export(pe_table152,"pe152.csv")
+export(pe_table153,"pe153.csv")
+export(pe_table161,"pe161.csv")
+export(pe_table162,"pe162.csv")
+export(pe_table163,"pe163.csv")
+export(pe_table171,"pe171.csv")
+export(pe_table172,"pe172.csv")
+export(pe_table173,"pe173.csv")
+export(pe_table181,"pe181.csv")
+export(pe_table182,"pe182.csv")
+export(pe_table183,"pe183.csv")
+export(pe_table191,"pe191.csv")
+export(pe_table192,"pe192.csv")
+export(pe_table193,"pe193.csv")
+export(pe_table201,"pe201.csv")
+export(pe_table202,"pe202.csv")
+export(pe_table203,"pe203.csv")
+
+# combine all same indicator data table
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+
+# filter by state
+pe_table1_ca = filter(pe_table1, X_STATE == 6)
+pe_table2_ca = filter(pe_table2, X_STATE == 6)
+pe_table3_ca = filter(pe_table3, X_STATE == 6)
+
+pe_table1_dc = filter(pe_table1, X_STATE == 11)
+pe_table2_dc = filter(pe_table2, X_STATE == 11)
+pe_table3_dc = filter(pe_table3, X_STATE == 11)
+
+pe_table1_ga = filter(pe_table1, X_STATE == 13)
+pe_table2_ga = filter(pe_table2, X_STATE == 13)
+pe_table3_ga = filter(pe_table3, X_STATE == 13)
+
+
+
