@@ -506,5 +506,134 @@ pe_table1_ga = filter(pe_table1, X_STATE == 13)
 pe_table2_ga = filter(pe_table2, X_STATE == 13)
 pe_table3_ga = filter(pe_table3, X_STATE == 13)
 
+#filter by state & eliminate those "0" answers
+pe_table1_ca = filter(pe_table1, X_STATE == 6, SMOKE100 %in% c(1, 2))
+pe_table2_ca = filter(pe_table2, X_STATE == 6, SMOKDAY2 %in% c(1, 2, 3))
+pe_table3_ca = filter(pe_table3, X_STATE == 6, USENOW3 %in% c(1, 2, 3))
+
+pe_table1_dc = filter(pe_table1, X_STATE == 11, SMOKE100 %in% c(1, 2))
+pe_table2_dc = filter(pe_table2, X_STATE == 11, SMOKDAY2 %in% c(1, 2, 3))
+pe_table3_dc = filter(pe_table3, X_STATE == 11, USENOW3 %in% c(1, 2, 3))
+
+pe_table1_ga = filter(pe_table1, X_STATE == 13, SMOKE100 %in% c(1, 2))
+pe_table2_ga = filter(pe_table2, X_STATE == 13, SMOKDAY2 %in% c(1, 2, 3))
+pe_table3_ga = filter(pe_table3, X_STATE == 13, USENOW3 %in% c(1, 2, 3))
+
+#
+export(pe_table1_ca," pe_table1_ca.csv")
+export(pe_table2_ca," pe_table2_ca.csv")
+export(pe_table3_ca," pe_table3_ca.csv")
+
+export(pe_table1_dc," pe_table1_dc.csv")
+export(pe_table2_dc," pe_table2_dc.csv")
+export(pe_table3_dc," pe_table3_dc.csv")
+
+export(pe_table1_ga," pe_table1_ga.csv")
+export(pe_table2_ga," pe_table2_ga.csv")
+export(pe_table3_ga," pe_table3_ga.csv")
+
+# try
+ptca1 = filter(pe_table1, X_STATE == 6, SMOKE100 == 1)
+ptdc1 = filter(pe_table1, X_STATE == 11, SMOKE100 == 1)
+ptga1 = filter(pe_table1, X_STATE == 13, SMOKE100 == 1)
+
+ptca2 = filter(pe_table2, X_STATE == 6, SMOKDAY2 == 1)
+ptdc2 = filter(pe_table2, X_STATE == 11, SMOKDAY2 == 1)
+ptga2 = filter(pe_table2, X_STATE == 13, SMOKDAY2 == 1)
+
+ptca3 = filter(pe_table3, X_STATE == 6, USENOW3 == 1)
+ptdc3 = filter(pe_table3, X_STATE == 11, USENOW3 == 1)
+ptga3 = filter(pe_table3, X_STATE == 13, USENOW3 == 1)
+
+# plot pe1 , pe2, pe3
+ggplot() + 
+geom_line(data = ptca1, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca1, mapping = aes(x = ptca1$IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc1, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc1, mapping = aes(x = ptdc1$IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga1, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga1, mapping = aes(x = ptga1$IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Have Smoked 100 Cigarettes')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.6), colour="blue", size = 4, angle=90)
+ggsave("pe1_$1".png)
+
+ggplot() + 
+geom_line(data = ptca2, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca2, mapping = aes(x = ptca2$IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc2, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc2, mapping = aes(x = ptdc2$IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga2, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga2, mapping = aes(x = ptga2$IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Smoke Every Day Proportion')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.125), colour="blue", size = 4, angle=90)
+ggsave("pe2_$1.png")
 
 
+ggplot() + 
+geom_line(data = ptca3, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca3, mapping = aes(x = ptca3$IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc3, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc3, mapping = aes(x = ptdc3$IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga3, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga3, mapping = aes(x = ptga3$IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Use Smokeless Tobacco Products Every Day')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.06), colour="blue", size = 4, angle=90)
+ggsave("pe3_$1.png")
+
+
+# add cofidence interval, not show
+ggplot() + 
+geom_line(data = ptca3, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca3, mapping = aes(x = ptca3$IYEAR, y = proportion),color ="red")+
+geom_errorbar(data = ptca3, aes(IYEAR, ymin=proportion_low, ymax=proportion_upp), width=.2, position=position_dodge(.9))+
+geom_line(data = ptdc3, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc3, mapping = aes(x = ptdc3$IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga3, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga3, mapping = aes(x = ptga3$IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Smoke Every Day Proportion')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.06), colour="blue", size = 4, angle=90)
+
+## take the "2" some days for pe2, pe3
+ptca2 = filter(pe_table2, X_STATE == 6, SMOKDAY2 == 2)
+ptdc2 = filter(pe_table2, X_STATE == 11, SMOKDAY2 == 2)
+ptga2 = filter(pe_table2, X_STATE == 13, SMOKDAY2 == 2)
+
+ptca3 = filter(pe_table3, X_STATE == 6, USENOW3 == 2)
+ptdc3 = filter(pe_table3, X_STATE == 11, USENOW3 == 2)
+ptga3 = filter(pe_table3, X_STATE == 13, USENOW3 == 2)
+
+# pe2$2
+ggplot() + 
+geom_line(data = ptca2, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca2, mapping = aes(x = ptca2$IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc2, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc2, mapping = aes(x = ptdc2$IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga2, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga2, mapping = aes(x = ptga2$IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Smoke Some Days Proportion')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.08), colour="blue", size = 4, angle=90)
+ggsave("pe2_$2.png")
+
+# pe3$2
+ggplot() + 
+geom_line(data = ptca3, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca3, mapping = aes(x = ptca3$IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc3, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc3, mapping = aes(x = ptdc3$IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga3, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga3, mapping = aes(x = ptga3$IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Use Smokeless Tobacco Products Some Days')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.15), colour="blue", size = 4, angle=90)
+ggsave("pe3_$2.png")
