@@ -1,0 +1,64 @@
+chooseCRANmirror()
+library(rio)
+library(tidyverse)
+
+
+LLCP2011 = import("LLCP2011.XPT")
+export(LLCP2011,"LLCP2011.csv")
+llcp2011 = read.csv("LLCP2011.csv",header = TRUE)
+all2011 = filter(llcp2011,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3")
+all2011_tu = all2011[,keep_var]
+all2011_tu $SMOKE100 = recode(all2011_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2011_tu $SMOKDAY2 = recode(all2011_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2011_tu $USENOW3 = recode(all2011_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+
+ca2011 = filter(all2011, X_STATE == 6)
+dc2011 = filter(all2011, X_STATE == 11)
+ga2011 = filter(all2011, X_STATE == 13)
+
+export(ca2011,"ca2011.csv")
+export(dc2011,"dc2011.csv")
+export(ga2011,"ga2011.csv")
+
+ca2011 = read.csv("ca2011.csv",header = TRUE)
+dc2011 = read.csv("dc2011.csv",header = TRUE)
+ga2011 = read.csv("ga2011.csv",header = TRUE)
+
+library(srvyr)
+
+ca11_pe = ca2011 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc11_pe = dc2011 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga11_pe = ga2011 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca11_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc11_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga11_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+
