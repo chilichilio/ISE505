@@ -1,0 +1,71 @@
+#2010
+chooseCRANmirror()
+library(rio)
+library(tidyverse)
+
+LLCP2010 = import("CDBRFS10.XPT")
+export(LLCP2010,"LLCP2010.csv")
+llcp2010 = read.csv("LLCP2010.csv",header = TRUE)
+all2010 = filter(llcp2010,X_STATE ==6 | X_STATE == 11|X_STATE == 13)
+# no LLCPWT for 2010
+keep_var = c("X_PSU", "X_LLCPWT", "X_STSTR", "X_STATE", "SMOKE100", "SMOKDAY2", "USENOW3")
+all2010_tu = all2010[,keep_var]
+all2010_tu $SMOKE100 = recode(all2010_tu $SMOKE100, '1' = '1', '2' = '2', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2010_tu $SMOKDAY2 = recode(all2010_tu $SMOKDAY2, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+all2010_tu $USENOW3 = recode(all2010_tu $USENOW3, '1' = '1', '2' = '2', '3' = '3', '7' = '0', '9' = '0', .missing = '0', .default = '0')
+
+ca2010 = filter(all2010, X_STATE == 6)
+dc2010 = filter(all2010, X_STATE == 11)
+ga2010 = filter(all2010, X_STATE == 13)
+
+export(ca2010tu,"ca2010.csv")
+export(dc2010tu,"dc2010.csv")
+export(ca2010tu,"ca2010.csv")
+
+ca2010 = read.csv("ca2010.csv",header = TRUE)
+dc2010 = read.csv("dc2010.csv",header = TRUE)
+ga2010 = read.csv("ga2010.csv",header = TRUE)
+
+library(srvyr)
+
+ca10_pe = ca2010 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc10_pe = dc2010 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga10_pe = ga2010 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+cape = function(y) {y=enquo(y)
+ca10_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+dcpe = function(y) {y=enquo(y)
+dc10_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+gape = function(y) {y=enquo(y)
+ga10_pe %>% group_by(!!y) %>% summarize (proportion =
+survey_mean(vartype = c("se","ci")))}
+
+ca1 = cape(SMOKE100)
+dc1 = dcpe(SMOKE100)
+ga1 = gape(SMOKE100)
+ca2 = cape(SMOKDAY2)
+dc2 = dcpe(SMOKDAY2)
+ga2 = gape(SMOKDAY2)
+ca3 = cape(USENOW3)
+dc3 = dcpe(USENOW3)
+ga3 = gape(USENOW3)
+ca4 = cape(ECIGARET)
+dc4 = dcpe(ECIGARET)
+ga4 = gape(ECIGARET)
+
+pe_table1 = bind_rows(ca1,dc1,ga1)
+pe_table2 = bind_rows(ca2,dc2,ga2)
+pe_table3 = bind_rows(ca3,dc3,ga3)
+pe_table4 = bind_rows(ca4,dc4,ga4)
+
+
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+export(pe_table4,"pe4.csv")
+
+#2011
