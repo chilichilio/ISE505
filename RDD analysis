@@ -1,0 +1,684 @@
+library(rio)
+library(rddtools)
+library(magrittr)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+
+setwd("/Users/liyikeji/Desktop/ISE505/csv11to20/already recode/recode with only10/New Folder With Items")
+
+pe1 = read.csv("pe1.csv", header = TRUE)
+pe2 = read.csv("pe2.csv", header = TRUE)
+pe3 = read.csv("pe3.csv", header = TRUE)
+
+#filter by state
+pe1ca = filter(pe1, X_STATE == 6, SMOKE100 == 1)
+pe1dc = filter(pe1, X_STATE == 11, SMOKE100 == 1)
+pe1ga = filter(pe1, X_STATE == 13, SMOKE100 == 1)
+
+pe2ca = filter(pe2, X_STATE == 6, SMOKDAY2 == 1)
+pe2dc = filter(pe2, X_STATE == 11, SMOKDAY2 == 1)
+pe2ga = filter(pe2, X_STATE == 13, SMOKDAY2 == 1)
+
+pe3ca = filter(pe3, X_STATE == 6, USENOW3 == 1)
+pe3dc = filter(pe3, X_STATE == 11, USENOW3 == 1)
+pe3ga = filter(pe3, X_STATE == 13, USENOW3 == 1)
+
+# https://rpubs.com/phle/r_tutorial_regression_discontinuity_design
+# ggplot scatterplot, no enough values, consider more counties in CA
+pe1ca %>% 
+  ggplot(aes(x = IYEAR, y = proportion)) +   geom_point() +
+  geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed") + 
+  annotate("text", x = 2015, y = 0.5, label = "Tax Increse in CA",
+           size=4) +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")
+
+# 3.2 Estimation: same slopes
+# The RDD can be estimated by OLS. The first regression applies the same slopes on both sides of the cutoff.
+lm_same_slope <- pe1ca %>% 
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$% 
+  lm(proportion ~ threshold + I(IYEAR - 2017))
+
+summary(lm_same_slope) 
+
+# alternative approach by using R package rddtools
+rdd_data(y = pe1ca$proportion, 
+         x = pe1ca$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+
+rdd_data(y = pe1dc$proportion, 
+         x = pe1dc$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+  
+rdd_data(y = pe1ga$proportion, 
+         x = pe1ga$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+ 
+# SMOKEDAY2
+rdd_data(y = pe2ca$proportion, 
+         x = pe2ca$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+
+rdd_data(y = pe2dc$proportion, 
+         x = pe2dc$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+  
+rdd_data(y = pe2ga$proportion, 
+         x = pe2ga$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+  
+#USENOW3
+rdd_data(y = pe3ca$proportion, 
+         x = pe3ca$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+
+rdd_data(y = pe3dc$proportion, 
+         x = pe3dc$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+  
+rdd_data(y = pe3ga$proportion, 
+         x = pe3ga$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+
+# ggplot
+pe1ca %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("lm1ca1.png")
+
+pe1dc %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("lm1dc1.png")
+
+pe1ga %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("lm1ga1.png")
+
+pe2ca %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("lm2ca1.png")
+
+pe2dc %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("lm2dc1.png")
+
+pe2ga %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("lm2ga1.png")
+
+pe3ca %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Smokeless Tobacco Products Use",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("lm3ca1.png")
+pe3dc %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Smokeless Tobacco Products Use",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("lm3dc1.png")
+pe3ga %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Smokeless Tobacco Products Use",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("lm3ga1.png")
+
+
+
+
+
+# 3.3 Estimation: different slopes
+
+rdd_data(y = pe1ca$proportion, 
+         x = pe1ca$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+
+rdd_data(y = pe1dc$proportion, 
+         x = pe1dc$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+  
+rdd_data(y = pe1ga$proportion, 
+         x = pe1ga$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+ 
+# SMOKEDAY2
+rdd_data(y = pe2ca$proportion, 
+         x = pe2ca$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+
+rdd_data(y = pe2dc$proportion, 
+         x = pe2dc$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+  
+rdd_data(y = pe2ga$proportion, 
+         x = pe2ga$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+  
+#USENOW3
+rdd_data(y = pe3ca$proportion, 
+         x = pe3ca$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+
+rdd_data(y = pe3dc$proportion, 
+         x = pe3dc$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+  
+rdd_data(y = pe3ga$proportion, 
+         x = pe3ga$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+
+##############scatterplot
+#
+pe1ca %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("dslm1ca1.png")
+pe1dc %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("dslm1dc1.png")
+pe1ga %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("dslm1ga1.png")
+>>>>>>>>>>
+#2
+pe2ca %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("dslm2ca1.png")
+pe2dc %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("dslm2dc1.png")
+pe2ga %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("dslm2ga1.png")
+>>>>>>>>>>>
+#3
+pe3ca %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Smokeless Tobacco Products Use",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("dslm3ca1.png")
+pe3dc %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Smokeless Tobacco Products Use",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("dslm3dc1.png")
+pe3ga %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Smokeless Tobacco Products Use",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("dslm3ga1.png")
+
+
+
+
+3.4 Modifying the functional form
+rdd_data(y = pe1ca$proportion, 
+         x = pe1ca$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+
+rdd_data(y = pe1dc$proportion, 
+         x = pe1dc$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+  
+rdd_data(y = pe1ga$proportion, 
+         x = pe1ga$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+ 
+# SMOKEDAY2
+rdd_data(y = pe2ca$proportion, 
+         x = pe2ca$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+
+rdd_data(y = pe2dc$proportion, 
+         x = pe2dc$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+  
+rdd_data(y = pe2ga$proportion, 
+         x = pe2ga$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+  
+#USENOW3
+rdd_data(y = pe3ca$proportion, 
+         x = pe3ca$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+
+rdd_data(y = pe3dc$proportion, 
+         x = pe3dc$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+  
+rdd_data(y = pe3ga$proportion, 
+         x = pe3ga$IYEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+
+
+
+
+# 3.4 Modifying the functional form
+#
+pe1ca %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("mdslm1ca1.png")
+pe1dc %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("mdslm1dc1.png")
+pe1ga %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Have Smoked 100 Cigarettes",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("mdslm1ga1.png")
+>>>>>>>>>>
+#2
+pe2ca %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("mdslm2ca1.png")
+pe2dc %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("mdslm2dc1.png")
+pe2ga %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("mdslm2ga1.png")
+>>>>>>>>>>>
+#3
+pe3ca %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Smokeless Tobacco Products Use",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("mdslm3ca1.png")
+pe3dc %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Smokeless Tobacco Products Use",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("mdslm3dc1.png")
+pe3ga %>%
+  select(IYEAR, proportion) %>%
+  mutate(threshold = as.factor(ifelse(IYEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = IYEAR, y = proportion, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Smokeless Tobacco Products Use",
+       x = "Year")+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("mdslm3ga1.png")
+
+# 3.5 Sensitivity analysis
+# Futhermore, it is advisable to check the sensitivity of the results with respect to limiting the sample size.
+lm_sensitivity <- pe1ca %>%
+  filter(IYEAR >= 2015 & IYEAR <= 2019) %>%
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$%
+  lm(proportion ~ threshold + I(IYEAR - 2017) + threshold:I(IYEAR - 2017))
+
+summary(lm_sensitivity)
+
+lm_sensitivity <- pe1dc %>%
+  filter(IYEAR >= 2015 & IYEAR <= 2019) %>%
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$%
+  lm(proportion ~ threshold + I(IYEAR - 2017) + threshold:I(IYEAR - 2017))
+
+summary(lm_sensitivity)
+
+lm_sensitivity <- pe1ga %>%
+  filter(IYEAR >= 2015 & IYEAR <= 2019) %>%
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$%
+  lm(proportion ~ threshold + I(IYEAR - 2017) + threshold:I(IYEAR - 2017))
+
+summary(lm_sensitivity)
+
+lm_sensitivity <- pe2ca %>%
+  filter(IYEAR >= 2015 & IYEAR <= 2019) %>%
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$%
+  lm(proportion ~ threshold + I(IYEAR - 2017) + threshold:I(IYEAR - 2017))
+
+summary(lm_sensitivity)
+
+lm_sensitivity <- pe2dc %>%
+  filter(IYEAR >= 2015 & IYEAR <= 2019) %>%
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$%
+  lm(proportion ~ threshold + I(IYEAR - 2017) + threshold:I(IYEAR - 2017))
+
+summary(lm_sensitivity)
+
+lm_sensitivity <- pe2ga %>%
+  filter(IYEAR >= 2015 & IYEAR <= 2019) %>%
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$%
+  lm(proportion ~ threshold + I(IYEAR - 2017) + threshold:I(IYEAR - 2017))
+
+summary(lm_sensitivity)
+
+lm_sensitivity <- pe3ca %>%
+  filter(IYEAR >= 2015 & IYEAR <= 2019) %>%
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$%
+  lm(proportion ~ threshold + I(IYEAR - 2017) + threshold:I(IYEAR - 2017))
+
+summary(lm_sensitivity)
+
+lm_sensitivity <- pe3dc %>%
+  filter(IYEAR >= 2015 & IYEAR <= 2019) %>%
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$%
+  lm(proportion ~ threshold + I(IYEAR - 2017) + threshold:I(IYEAR - 2017))
+
+summary(lm_sensitivity)
+
+lm_sensitivity <- pe3ga %>%
+  filter(IYEAR >= 2015 & IYEAR <= 2019) %>%
+  mutate(threshold = ifelse(IYEAR >= 2017, 1, 0)) %$%
+  lm(proportion ~ threshold + I(IYEAR - 2017) + threshold:I(IYEAR - 2017))
+
+summary(lm_sensitivity)
+
+#####scatterplot
+
