@@ -1,0 +1,426 @@
+pe111 = read.csv("pe111.csv")
+pe112 = read.csv("pe112.csv")
+pe113 = read.csv("pe113.csv")
+pe121 = read.csv("pe121.csv")
+pe122 = read.csv("pe122.csv")
+pe123 = read.csv("pe123.csv")
+pe131 = read.csv("pe131.csv")
+pe132 = read.csv("pe132.csv")
+pe133 = read.csv("pe133.csv")
+pe141 = read.csv("pe141.csv")
+pe142 = read.csv("pe142.csv")
+pe143 = read.csv("pe143.csv")
+pe151 = read.csv("pe151.csv")
+pe152 = read.csv("pe152.csv")
+pe153 = read.csv("pe153.csv")
+pe161 = read.csv("pe161.csv")
+pe162 = read.csv("pe162.csv")
+pe163 = read.csv("pe163.csv")
+pe171 = read.csv("pe171.csv")
+pe172 = read.csv("pe172.csv")
+pe173 = read.csv("pe173.csv")
+pe181 = read.csv("pe181.csv")
+pe182 = read.csv("pe182.csv")
+pe183 = read.csv("pe183.csv")
+pe191 = read.csv("pe191.csv")
+pe192 = read.csv("pe192.csv")
+pe193 = read.csv("pe193.csv")
+pe201 = read.csv("pe201.csv")
+pe202 = read.csv("pe202.csv")
+pe203 = read.csv("pe203.csv")
+
+##another directory
+ca2011 = read.csv("ca2011b.csv",header = TRUE)
+dc2011 = read.csv("dc2011b.csv",header = TRUE)
+ga2011 = read.csv("ga2011b.csv",header = TRUE)
+ca2012 = read.csv("ca2012b.csv",header = TRUE)
+dc2012 = read.csv("dc2012b.csv",header = TRUE)
+ga2012 = read.csv("ga2012b.csv",header = TRUE)
+ca2013 = read.csv("ca2013b.csv",header = TRUE)
+dc2013 = read.csv("dc2013b.csv",header = TRUE)
+ga2013 = read.csv("ga2013b.csv",header = TRUE)
+ca2014 = read.csv("ca2014b.csv",header = TRUE)
+dc2014 = read.csv("dc2014b.csv",header = TRUE)
+ga2014 = read.csv("ga2014b.csv",header = TRUE)
+ca2015 = read.csv("ca2015b.csv",header = TRUE)
+dc2015 = read.csv("dc2015b.csv",header = TRUE)
+ga2015 = read.csv("ga2015b.csv",header = TRUE)
+ca2016 = read.csv("ca2016b.csv",header = TRUE)
+dc2016 = read.csv("dc2016b.csv",header = TRUE)
+ga2016 = read.csv("ga2016b.csv",header = TRUE)
+ca2017 = read.csv("ca2017b.csv",header = TRUE)
+dc2017 = read.csv("dc2017b.csv",header = TRUE)
+ga2017 = read.csv("ga2017b.csv",header = TRUE)
+ca2018 = read.csv("ca2018b.csv",header = TRUE)
+dc2018 = read.csv("dc2018b.csv",header = TRUE)
+ga2018 = read.csv("ga2018b.csv",header = TRUE)
+ca2019 = read.csv("ca2019b.csv",header = TRUE)
+dc2019 = read.csv("dc2019b.csv",header = TRUE)
+ga2019 = read.csv("ga2019b.csv",header = TRUE)
+ca2020 = read.csv("ca2020b.csv",header = TRUE)
+dc2020 = read.csv("dc2020b.csv",header = TRUE)
+ga2020 = read.csv("ga2020b.csv",header = TRUE)
+
+
+
+#
+pe111 = filter(pe111, IYEAR == 2011)
+pe112 = filter(pe112, IYEAR == 2011)
+pe113 = filter(pe113, IYEAR == 2011)
+pe121 = filter(pe121, IYEAR == 2012)
+pe122 = filter(pe122, IYEAR == 2012)
+pe123 = filter(pe123, IYEAR == 2012)
+pe131 = filter(pe131, IYEAR == 2013)
+pe132 = filter(pe132, IYEAR == 2013)
+pe133 = filter(pe133, IYEAR == 2013)
+
+pe141 = filter(pe141, IYEAR == 2014)
+pe142 = filter(pe142, IYEAR == 2014)
+pe143 = filter(pe143, IYEAR == 2014)
+
+pe151 = filter(pe151, IYEAR == 2015)
+pe152 = filter(pe152, IYEAR == 2015)
+pe153 = filter(pe153, IYEAR == 2015)
+
+pe161 = filter(pe161, IYEAR == 2016)
+pe162 = filter(pe162, IYEAR == 2016)
+pe163 = filter(pe163, IYEAR == 2016)
+
+pe171 = filter(pe171, IYEAR == 2017)
+pe172 = filter(pe172, IYEAR == 2017)
+pe173 = filter(pe173, IYEAR == 2017)
+
+pe181 = filter(pe181, IYEAR == 2018)
+pe182 = filter(pe182, IYEAR == 2018)
+pe183 = filter(pe183, IYEAR == 2018)
+
+pe191 = filter(pe191, IYEAR == 2019)
+pe192 = filter(pe192, IYEAR == 2019)
+pe193 = filter(pe193, IYEAR == 2019)
+
+pe201 = filter(pe201, IYEAR == 2020)
+pe202 = filter(pe202, IYEAR == 2020)
+pe203 = filter(pe203, IYEAR == 2020)
+
+##another directory
+ca2011 = filter(ca2011, IYEAR == 2011)
+dc2011 = filter(dc2011, IYEAR == 2011)
+ga2011 = filter(ga2011, IYEAR == 2011)
+
+ca2012 = filter(ca2012, IYEAR == 2012)
+dc2012 = filter(dc2012, IYEAR == 2012)
+ga2012 = filter(ga2012, IYEAR == 2012)
+
+ca2013 = filter(ca2013, IYEAR == 2013)
+dc2013 = filter(dc2013, IYEAR == 2013)
+ga2013 = filter(ga2013, IYEAR == 2013)
+
+ca2014 = filter(ca2014, IYEAR == 2014)
+dc2014 = filter(dc2014, IYEAR == 2014)
+ga2014 = filter(ga2014, IYEAR == 2014)
+
+ca2015 = filter(ca2015, IYEAR == 2015)
+dc2015 = filter(dc2015, IYEAR == 2015)
+ga2015 = filter(ga2015, IYEAR == 2015)
+
+ca2016 = filter(ca2016, IYEAR == 2016)
+dc2016 = filter(dc2016, IYEAR == 2016)
+ga2016 = filter(ga2016, IYEAR == 2016)
+
+ca2017 = filter(ca2017, IYEAR == 2017)
+dc2017 = filter(dc2017, IYEAR == 2017)
+ga2017 = filter(ga2017, IYEAR == 2017)
+
+ca2018 = filter(ca2018, IYEAR == 2018)
+dc2018 = filter(dc2018, IYEAR == 2018)
+ga2018 = filter(ga2018, IYEAR == 2018)
+
+ca2019 = filter(ca2019, IYEAR == 2019)
+dc2019 = filter(dc2019, IYEAR == 2019)
+ga2019 = filter(ga2019, IYEAR == 2019)
+
+ca2020 = filter(ca2020, IYEAR == 2020)
+dc2020 = filter(dc2020, IYEAR == 2020)
+ga2020 = filter(ga2020, IYEAR == 2020)
+
+
+
+
+
+##
+export(pe111,"pe111.csv")
+export(pe112,"pe112.csv")
+export(pe113,"pe113.csv")
+export(pe121,"pe121.csv")
+export(pe122,"pe122.csv")
+export(pe123,"pe123.csv")
+export(pe131,"pe131.csv")
+export(pe132,"pe132.csv")
+export(pe133,"pe133.csv")
+export(pe141,"pe141.csv")
+export(pe142,"pe142.csv")
+export(pe143,"pe143.csv")
+export(pe151,"pe151.csv")
+export(pe152,"pe152.csv")
+export(pe153,"pe153.csv")
+export(pe161,"pe161.csv")
+export(pe162,"pe162.csv")
+export(pe163,"pe163.csv")
+export(pe171,"pe171.csv")
+export(pe172,"pe172.csv")
+export(pe173,"pe173.csv")
+export(pe181,"pe181.csv")
+export(pe182,"pe182.csv")
+export(pe183,"pe183.csv")
+export(pe191,"pe191.csv")
+export(pe192,"pe192.csv")
+export(pe193,"pe193.csv")
+export(pe201,"pe201.csv")
+export(pe202,"pe202.csv")
+export(pe203,"pe203.csv")
+
+## another
+export(ca2011,"ca2011.csv")
+export(dc2011,"dc2011.csv")
+export(ga2011,"ga2011.csv")
+
+export(ca2012,"ca2012.csv")
+export(dc2012,"dc2012.csv")
+export(ga2012,"ga2012.csv")
+export(ca2013,"ca2013.csv")
+export(dc2013,"dc2013.csv")
+export(ga2013,"ga2013.csv")
+export(ca2014,"ca2014.csv")
+export(dc2014,"dc2014.csv")
+export(ga2014,"ga2014.csv")
+export(ca2015,"ca2015.csv")
+export(dc2015,"dc2015.csv")
+export(ga2015,"ga2015.csv")
+export(ca2016,"ca2016.csv")
+export(dc2016,"dc2016.csv")
+export(ga2016,"ga2016.csv")
+export(ca2017,"ca2017.csv")
+export(dc2017,"dc2017.csv")
+export(ga2017,"ga2017.csv")
+export(ca2018,"ca2018.csv")
+export(dc2018,"dc2018.csv")
+export(ga2018,"ga2018.csv")
+export(ca2019,"ca2019.csv")
+export(dc2019,"dc2019.csv")
+export(ga2019,"ga2019.csv")
+export(ca2020,"ca2020.csv")
+export(dc2020,"dc2020.csv")
+export(ga2020,"ga2020.csv")
+
+#
+pe_table1 = bind_rows(pe111,pe121,pe131,pe141,pe151,pe161,pe171,pe181,pe191,pe201)
+pe_table2 = bind_rows(pe112,pe122,pe132,pe142,pe152,pe162,pe172,pe182,pe192,pe202)
+pe_table3 = bind_rows(pe113,pe123,pe133,pe143,pe153,pe163,pe173,pe183,pe193,pe203)
+
+# eliminate extra years' data
+export(pe_table1,"pe1.csv")
+export(pe_table2,"pe2.csv")
+export(pe_table3,"pe3.csv")
+
+ca11_pe = ca2011 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc11_pe = dc2011 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga11_pe = ga2011 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca12_pe = ca2012 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc12_pe = dc2012 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga12_pe = ga2012 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca13_pe = ca2013 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc13_pe = dc2013 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga13_pe = ga2013 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca14_pe = ca2014 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc14_pe = dc2014 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga14_pe = ga2014 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca15_pe = ca2015 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc15_pe = dc2015 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga15_pe = ga2015 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca16_pe = ca2016 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc16_pe = dc2016 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga16_pe = ga2016 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca17_pe = ca2017 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc17_pe = dc2017 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga17_pe = ga2017 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca18_pe = ca2018 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc18_pe = dc2018 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga18_pe = ga2018 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca19_pe = ca2019 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc19_pe = dc2019 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga19_pe = ga2019 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+ca20_pe = ca2020 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+dc20_pe = dc2020 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+ga20_pe = ga2020 %>% as_survey_design(ids = "X_PSU",strata = "X_STSTR",weights = "X_LLCPWT")
+
+#
+ggplot() + 
+geom_line(data = ptca1, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca1, mapping = aes(x = ptca1$IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc1, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc1, mapping = aes(x = ptdc1$IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga1, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga1, mapping = aes(x = ptga1$IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Have Smoked 100 Cigarettes')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.4), colour="blue", size = 4, angle=90)+ scale_x_continuous(breaks = scales::pretty_breaks())
+
+ggplot() + 
+geom_line(data = ptca2, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca2, mapping = aes(x = IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc2, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc2, mapping = aes(x = IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga2, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga2, mapping = aes(x = IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Current Smoker')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.19), colour="blue", size = 4, angle=90)+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("2.png")
+
+ggplot() + 
+geom_line(data = ptca3, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca3, mapping = aes(x = IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc3, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc3, mapping = aes(x = IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga3, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga3, mapping = aes(x = IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Smokeless Tobacco Products Use')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.025), colour="blue", size = 4, angle=90)+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("3.png")
+
+#
+pe111 = read.csv("pe111.csv", header = TRUE)
+pe121 = read.csv("pe121.csv", header = TRUE)
+pe131 = read.csv("pe131.csv", header = TRUE)
+pe141 = read.csv("pe141.csv", header = TRUE)
+pe151 = read.csv("pe151.csv", header = TRUE)
+pe161 = read.csv("pe161.csv", header = TRUE)
+pe171 = read.csv("pe171.csv", header = TRUE)
+pe181 = read.csv("pe181.csv", header = TRUE)
+pe191 = read.csv("pe191.csv", header = TRUE)
+pe201 = read.csv("pe201.csv", header = TRUE)
+
+pe112 = read.csv("pe112.csv", header = TRUE)
+pe122 = read.csv("pe122.csv", header = TRUE)
+pe132 = read.csv("pe132.csv", header = TRUE)
+pe142 = read.csv("pe142.csv", header = TRUE)
+pe152 = read.csv("pe152.csv", header = TRUE)
+pe162 = read.csv("pe162.csv", header = TRUE)
+pe172 = read.csv("pe172.csv", header = TRUE)
+pe182 = read.csv("pe182.csv", header = TRUE)
+pe192 = read.csv("pe192.csv", header = TRUE)
+pe202 = read.csv("pe202.csv", header = TRUE)
+
+pe113 = read.csv("pe113.csv", header = TRUE)
+pe123 = read.csv("pe123.csv", header = TRUE)
+pe133 = read.csv("pe133.csv", header = TRUE)
+pe143 = read.csv("pe143.csv", header = TRUE)
+pe153 = read.csv("pe153.csv", header = TRUE)
+pe163 = read.csv("pe163.csv", header = TRUE)
+pe173 = read.csv("pe173.csv", header = TRUE)
+pe183 = read.csv("pe183.csv", header = TRUE)
+pe193 = read.csv("pe193.csv", header = TRUE)
+pe203 = read.csv("pe203.csv", header = TRUE)
+
+
+#
+pe_table1 = read.csv("pe1.csv")
+pe_table2 = read.csv("pe2.csv")
+pe_table3 = read.csv("pe3.csv")
+
+#
+ptca1 = filter(pe_table1, X_STATE == 6, SMOKE100 == 1)
+ptdc1 = filter(pe_table1, X_STATE == 11, SMOKE100 == 1)
+ptga1 = filter(pe_table1, X_STATE == 13, SMOKE100 == 1)
+
+ptca2 = filter(pe_table2, X_STATE == 6, SMOKDAY2 == 1)
+ptdc2 = filter(pe_table2, X_STATE == 11, SMOKDAY2 == 1)
+ptga2 = filter(pe_table2, X_STATE == 13, SMOKDAY2 == 1)
+
+ptca3 = filter(pe_table3, X_STATE == 6, USENOW3 == 1)
+ptdc3 = filter(pe_table3, X_STATE == 11, USENOW3 == 1)
+ptga3 = filter(pe_table3, X_STATE == 13, USENOW3 == 1)
+
+
+#
+ggplot() + 
+geom_line(data = ptca2, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca2, mapping = aes(x = IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc2, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc2, mapping = aes(x = IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga2, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga2, mapping = aes(x = IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Smoke Every Day')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.125), colour="blue", size = 4, angle=90)+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("2$1.png")
+
+ggplot() + 
+geom_line(data = ptca3, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca3, mapping = aes(x = IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc3, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc3, mapping = aes(x = IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga3, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga3, mapping = aes(x = IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Smokeless Tobacco Products Use Every Day')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.0125), colour="blue", size = 4, angle=90)+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("3$1.png")
+
+ggplot() + 
+geom_line(data = ptca2, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca2, mapping = aes(x = IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc2, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc2, mapping = aes(x = IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga2, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga2, mapping = aes(x = IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Smoke Some Days')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.07), colour="blue", size = 4, angle=90)+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("2$2.png")
+
+ggplot() + 
+geom_line(data = ptca3, aes(x = IYEAR, y = proportion),color ="red", linetype = "dashed") +
+geom_point(data = ptca3, mapping = aes(x = IYEAR, y = proportion),color ="red")+
+geom_line(data = ptdc3, aes(x = IYEAR, y = proportion),color ="blue", linetype = "twodash") +
+geom_point(data = ptdc3, mapping = aes(x = IYEAR, y = proportion),color ="blue")+
+geom_line(data = ptga3, aes(x = IYEAR, y = proportion),color ="orange") +
+geom_point(data = ptga3, mapping = aes(x = IYEAR, y = proportion),color ="orange")+
+xlab('Year') +
+ylab('Smokeless Tobacco Products Use Some Days')+
+geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed")+
+geom_text(aes(x=2016.5, label="Tax Increse in CA", y=0.015), colour="blue", size = 4, angle=90)+ scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("3$2.png")
+
+###
+ptca1 = filter(pe_table1, X_STATE == 6, SMOKE100 == 1)
+ptdc1 = filter(pe_table1, X_STATE == 11, SMOKE100 == 1)
+ptga1 = filter(pe_table1, X_STATE == 13, SMOKE100 == 1)
+
+ptca2 = filter(pe_table2, X_STATE == 6, SMOKDAY2 == 2)
+ptdc2 = filter(pe_table2, X_STATE == 11, SMOKDAY2 == 2)
+ptga2 = filter(pe_table2, X_STATE == 13, SMOKDAY2 == 2)
+
+ptca3 = filter(pe_table3, X_STATE == 6, USENOW3 == 2)
+ptdc3 = filter(pe_table3, X_STATE == 11, USENOW3 == 2)
+ptga3 = filter(pe_table3, X_STATE == 13, USENOW3 == 2)
+
+###
+
+
