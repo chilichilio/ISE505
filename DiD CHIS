@@ -1,0 +1,74 @@
+chooseCRANmirror()
+> library(rio)
+> library(tidyverse)
+library(dplyr)
+> casmoke = read.csv("casmoke.csv", header = TRUE)
+> notaxsmoke = read.csv("notaxsmoke.csv", header = TRUE)
+# recode the district
+notaxsmoke$DISTRICT = recode(notaxsmoke$DISTRICT, '1' = 'Arizona', '2' = 'Colorado', '3' = 'Georgia', '4' = 'Idaho', '5' = 'Maine', '6' = 'Michigan', '7' = 'Montana', '8' = 'Nebraska', '9' = 'Texas', .missing = '0', .default = '0')
+export()
+
+# add columns and remove Idaho and Nebraska
+newcolnt = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+newcolca = c(1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7)
+casmoke$DIS = newcolca
+notaxsmoke$DIS = newcolnt
+var1 = c("YEAR","RATE", "DIS")
+casmoke1 = casmoke[,var1]
+notaxsmoke1 = notaxsmoke[,var1]
+export(notaxsmoke1, "notaxsmoke1.csv")
+export(casmoke1, "casmoke1.csv")
+ntsmoke1 = filter(notaxsmoke1, DIS != 8 & DIS != 9)
+
+# recode ca and 
+
+
+casmoke1 = subset(casmoke, select = -2) notaxsmoke1 = subset(notaxsmoke, select = -2)
+notaxsmoke1 = subset(notaxsmoke, select = -2)
+
+
+
+# install.packages("devtools")
+# library(devtools)
+# devtools::install_github("strengejacke/sjlabelled")
+# install.packages(ggrepel)
+# install.packages(ggpubr)
+# install.packages(plm)
+
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(tidyr)
+library(sjlabelled)
+library(ggrepel)
+library(scales)
+library(ggpubr)
+library(plm)
+library(lmtest)
+
+# bind ca and other states dataframe
+caother = bind_rows(casmoke,notaxsmoke)
+
+
+
+#
+hist.2015 <- casmoke %>%
+  filter(observation == "February 1992") %>%
+  ggplot(aes(wage_st, fill = state)) +
+  geom_histogram(aes(y=c(..count..[..group..==1]/sum(..count..[..group..==1]),
+                         ..count..[..group..==2]/sum(..count..[..group..==2]))*100),
+                 alpha=0.5, position = "dodge", bins = 23) +
+  labs(title = "February 1992", x = "Wage range", y = "Percent of stores", fill = "") +
+  scale_fill_grey()
+
+hist.nov <- card_krueger_1994_mod %>%
+  filter(observation == "November 1992") %>%
+  ggplot(aes(wage_st, fill = state)) +
+  geom_histogram(aes(y=c(..count..[..group..==1]/sum(..count..[..group..==1]),
+                         ..count..[..group..==2]/sum(..count..[..group..==2]))*100),
+                 alpha = 0.5, position = "dodge", bins = 23) +
+  labs(title = "November 1992", x="Wage range", y = "Percent of stores", fill="") +
+  scale_fill_grey()
+
+ggarrange(hist.feb, hist.nov, ncol = 2, 
+          common.legend = TRUE, legend = "bottom")
