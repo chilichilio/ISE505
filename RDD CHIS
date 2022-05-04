@@ -1,0 +1,359 @@
+# CHIS data
+chooseCRANmirror()
+setwd(~)
+library(rio)
+library(tidyverse)
+# create empty matrix
+casmoke = data.frame(matrix(ncol = 3, nrow = 60))
+colnames(casmoke) = c("YEAR", "DISTRICT", "RATE")
+
+# write data from CHIS, 7 districts, from 2011 to 2020
+casmoke[1,] = c("2011", "Northern / Sierra Counties", 17.0)
+casmoke[2,] = c("2011", "Bay Area Counties", 11.4)
+casmoke[3,] = c("2011", "Sacramento Area Counties", 14.3)
+casmoke[4,] = c("2011", "San Joaquin Valley", 17.7)
+casmoke[5,] = c("2011", "Central Coast Counties", 12.7)
+casmoke[6,] = c("2011", "Los Angeles County", 15.4)
+casmoke[7,] = c("2011", "Other Southern California Counties", 14.2)
+casmoke[8,] = c("2012", "Northern / Sierra Counties", 20.2)
+casmoke[9,] = c("2012", "Bay Area Counties", 10.9)
+casmoke[10,] = c("2012", "Sacramento Area Counties", 16.3)
+casmoke[11,] = c("2012", "San Joaquin Valley", 15.5)
+casmoke[12,] = c("2012", "Central Coast Counties", 12.7)
+casmoke[13,] = c("2012", "Los Angeles County", 13.0)
+casmoke[14,] = c("2012", "Other Southern California Counties", 12.9)
+casmoke[15,] = c("2013", "Northern / Sierra Counties", 17.3)
+casmoke[16,] = c("2013", "Bay Area Counties", 11.0)
+casmoke[17,] = c("2013", "Sacramento Area Counties", 15.6)
+casmoke[18,] = c("2013", "San Joaquin Valley", 17.8)
+casmoke[19,] = c("2013", "Central Coast Counties", 12.3)
+casmoke[20,] = c("2013", "Los Angeles County", 12.8)
+casmoke[21,] = c("2013", "Other Southern California Counties", 11.9)
+casmoke[22,] = c("2014", "Northern / Sierra Counties", 17.5)
+casmoke[23,] = c("2014", "Bay Area Counties", 10.6)
+casmoke[24,] = c("2014", "Sacramento Area Counties", 12.9)
+casmoke[25,] = c("2014", "San Joaquin Valley", 17.2)
+casmoke[26,] = c("2014", "Central Coast Counties", 9.7)
+casmoke[27,] = c("2014", "Los Angeles County", 10.8)
+casmoke[28,] = c("2014", "Other Southern California Counties", 11.2)
+casmoke[29,] = c("2015", "Northern / Sierra Counties", 17.3)
+casmoke[30,] = c("2015", "Bay Area Counties", 10.9)
+casmoke[31,] = c("2015", "Sacramento Area Counties", 15.7)
+casmoke[32,] = c("2015", "San Joaquin Valley", 15.4)
+casmoke[33,] = c("2015", "Central Coast Counties", 12.8)
+casmoke[34,] = c("2015", "Los Angeles County", 12.6)
+casmoke[35,] = c("2015", "Other Southern California Counties", 12.9)
+casmoke[36,] = c("2016", "Northern / Sierra Counties", 18.9)
+casmoke[37,] = c("2016", "Bay Area Counties", 10.3)
+casmoke[38,] = c("2016", "Sacramento Area Counties", 13.0)
+casmoke[39,] = c("2016", "San Joaquin Valley", 16.0)
+casmoke[40,] = c("2016", "Central Coast Counties", 10.2)
+casmoke[41,] = c("2016", "Los Angeles County", 11.6)
+casmoke[42,] = c("2016", "Other Southern California Counties", 11.0)
+casmoke[43,] = c("2017", "Northern / Sierra Counties", 17.7)
+casmoke[44,] = c("2017", "Bay Area Counties", 9.3)
+casmoke[45,] = c("2017", "Sacramento Area Counties", 8.4)
+casmoke[46,] = c("2017", "San Joaquin Valley", 11.8)
+casmoke[47,] = c("2017", "Central Coast Counties", 9.0)
+casmoke[48,] = c("2017", "Los Angeles County", 9.0)
+casmoke[49,] = c("2017", "Other Southern California Counties", 11.2)
+casmoke[50,] = c("2018", "Northern / Sierra Counties", 19.0)
+casmoke[51,] = c("2018", "Bay Area Counties", 8.8)
+casmoke[52,] = c("2018", "Sacramento Area Counties", 11.8)
+casmoke[53,] = c("2018", "San Joaquin Valley", 15.9)
+casmoke[54,] = c("2018", "Central Coast Counties", 9.7)
+casmoke[55,] = c("2018", "Los Angeles County", 10.4)
+casmoke[56,] = c("2018", "Other Southern California Counties", 11.0)
+casmoke[57,] = c("2019", "Northern / Sierra Counties", 11.4)
+casmoke[58,] = c("2019", "Bay Area Counties", 5.6)
+casmoke[59,] = c("2019", "Sacramento Area Counties", 6.3)
+casmoke[60,] = c("2019", "San Joaquin Valley", 8.5)
+casmoke[61,] = c("2019", "Central Coast Counties", 7.2)
+casmoke[62,] = c("2019", "Los Angeles County", 6.3)
+casmoke[63,] = c("2019", "Other Southern California Counties", 6.8)
+casmoke[64,] = c("2020", "Northern / Sierra Counties", 12.6)
+casmoke[65,] = c("2020", "Bay Area Counties", 4.7)
+casmoke[66,] = c("2020", "Sacramento Area Counties", 6.1)
+casmoke[67,] = c("2020", "San Joaquin Valley", 10.0)
+casmoke[68,] = c("2020", "Central Coast Counties", 8.2)
+casmoke[69,] = c("2020", "Los Angeles County", 6.1)
+casmoke[70,] = c("2020", "Other Southern California Counties", 5.9)
+casmoke$RATE = casmoke$RATE / 100
+export(casmoke, "casmoke.csv")
+
+#
+library(dplyr)
+library(ggplot2)
+library(rddtools)
+library(magrittr)
+
+casmoke$RATE = casmoke$RATE / 100
+
+casmoke %>% 
+  ggplot(aes(x = YEAR, y = RATE)) + 
+  geom_point() +
+  geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed") + 
+  annotate("text", x = 2015, y = 0.08, label = "Tax Increase in CA",
+           size=4) +
+  labs(y = "Current Smoker Rate",
+       x = "Year") + scale_y_continuous(labels = scales::percent) + scale_x_continuous(breaks = scales::pretty_breaks())
+       
+ggsave("6.pdf", width = 10, height = 7)
+
+# add smoking rate data from other 9 states that haven't implement any tobacco tax increase since 2007
+notaxsmoke = data.frame(matrix(ncol = 3, nrow = 90))
+colnames(notaxsmoke) = c("YEAR", "DISTRICT", "RATE")
+
+notaxsmoke[1,] = c("2011", "1", 1)
+notaxsmoke[2,] = c("2011", "2", 1)
+notaxsmoke[3,] = c("2011", "3", 1)
+notaxsmoke[4,] = c("2011", "4", 1)
+notaxsmoke[5,] = c("2011", "5", 1)
+notaxsmoke[6,] = c("2011", "6", 1)
+notaxsmoke[7,] = c("2011", "7", 1)
+notaxsmoke[8,] = c("2011", "8", 1)
+notaxsmoke[9,] = c("2011", "9", 1)
+notaxsmoke[10,] = c("2012", "1", 1)
+notaxsmoke[11,] = c("2012", "2", 1)
+notaxsmoke[12,] = c("2012", "3", 1)
+notaxsmoke[13,] = c("2012", "4", 1)
+notaxsmoke[14,] = c("2012", "5", 1)
+notaxsmoke[15,] = c("2012", "6", 1)
+notaxsmoke[16,] = c("2012", "7", 1)
+notaxsmoke[17,] = c("2012", "8", 1)
+notaxsmoke[18,] = c("2012", "9", 1)
+notaxsmoke[19,] = c("2013", "1", 1)
+notaxsmoke[20,] = c("2013", "2", 1)
+notaxsmoke[21,] = c("2013", "3", 1)
+notaxsmoke[22,] = c("2013", "4", 1)
+notaxsmoke[23,] = c("2013", "5", 1)
+notaxsmoke[24,] = c("2013", "6", 1)
+notaxsmoke[25,] = c("2013", "7", 1)
+notaxsmoke[26,] = c("2013", "8", 1)
+notaxsmoke[27,] = c("2013", "9", 1)
+notaxsmoke[28,] = c("2014", "1", 1)
+notaxsmoke[29,] = c("2014", "2", 1)
+notaxsmoke[30,] = c("2014", "3", 1)
+notaxsmoke[31,] = c("2014", "4", 1)
+notaxsmoke[32,] = c("2014", "5", 1)
+notaxsmoke[33,] = c("2014", "6", 1)
+notaxsmoke[34,] = c("2014", "7", 1)
+notaxsmoke[35,] = c("2014", "8", 1)
+notaxsmoke[36,] = c("2014", "9", 1)
+notaxsmoke[37,] = c("2015", "1", 1)
+notaxsmoke[38,] = c("2015", "2", 1)
+notaxsmoke[39,] = c("2015", "3", 1)
+notaxsmoke[40,] = c("2015", "4", 1)
+notaxsmoke[41,] = c("2015", "5", 1)
+notaxsmoke[42,] = c("2015", "6", 1)
+notaxsmoke[43,] = c("2015", "7", 1)
+notaxsmoke[44,] = c("2015", "8", 1)
+notaxsmoke[45,] = c("2015", "9", 1)
+notaxsmoke[46,] = c("2016", "1", 1)
+notaxsmoke[47,] = c("2016", "2", 1)
+notaxsmoke[48,] = c("2016", "3", 1)
+notaxsmoke[49,] = c("2016", "4", 1)
+notaxsmoke[50,] = c("2016", "5", 1)
+notaxsmoke[51,] = c("2016", "6", 1)
+notaxsmoke[52,] = c("2016", "7", 1)
+notaxsmoke[53,] = c("2016", "8", 1)
+notaxsmoke[54,] = c("2016", "9", 1)
+notaxsmoke[55,] = c("2017", "1", 1)
+notaxsmoke[56,] = c("2017", "2", 1)
+notaxsmoke[57,] = c("2017", "3", 1)
+notaxsmoke[58,] = c("2017", "4", 1)
+notaxsmoke[59,] = c("2017", "5", 1)
+notaxsmoke[60,] = c("2017", "6", 1)
+notaxsmoke[61,] = c("2017", "7", 1)
+notaxsmoke[62,] = c("2017", "8", 1)
+notaxsmoke[63,] = c("2017", "9", 1)
+notaxsmoke[64,] = c("2018", "1", 1)
+notaxsmoke[65,] = c("2018", "2", 1)
+notaxsmoke[66,] = c("2018", "3", 1)
+notaxsmoke[67,] = c("2018", "4", 1)
+notaxsmoke[68,] = c("2018", "5", 1)
+notaxsmoke[69,] = c("2018", "6", 1)
+notaxsmoke[70,] = c("2018", "7", 1)
+notaxsmoke[71,] = c("2018", "8", 1)
+notaxsmoke[72,] = c("2018", "9", 1)
+notaxsmoke[73,] = c("2019", "1", 1)
+notaxsmoke[74,] = c("2019", "2", 1)
+notaxsmoke[75,] = c("2019", "3", 1)
+notaxsmoke[76,] = c("2019", "4", 1)
+notaxsmoke[77,] = c("2019", "5", 1)
+notaxsmoke[78,] = c("2019", "6", 1)
+notaxsmoke[79,] = c("2019", "7", 1)
+notaxsmoke[80,] = c("2019", "8", 1)
+notaxsmoke[81,] = c("2019", "9", 1)
+notaxsmoke[82,] = c("2020", "1", 1)
+notaxsmoke[83,] = c("2020", "2", 1)
+notaxsmoke[84,] = c("2020", "3", 1)
+notaxsmoke[85,] = c("2020", "4", 1)
+notaxsmoke[86,] = c("2020", "5", 1)
+notaxsmoke[87,] = c("2020", "6", 1)
+notaxsmoke[88,] = c("2020", "7", 1)
+notaxsmoke[89,] = c("2020", "8", 1)
+notaxsmoke[90,] = c("2020", "9", 1)
+
+#
+newcol = c(19.3, 18.3, 21.2, 17.2, 22.8, 23.3, 22.1, 20, 19.2, 17.1, 17.7, 20.4, 16.4, 20.3, 23.3, 19.7, 19.7, 18.2, 16.3, 17.7, 18.8, 17.2, 20.2, 21.4, 19, 18.5, 15.9, 16.5, 15.7, 17.4, 15.9, 19.3, 21.2, 19.9, 17.3, 14.5, 14, 15.7, 17.7, 13.8, 19.5, 20.7, 18.9, 17.1, 15.2, 14.7, 15.6, 17.9, 14.5, 19.8, 20.4, 18.5, 17, 14.3, 15.6, 14.6, 17.5, 14.4, 17.3, 19.3, 17.2, 15.4, 15.7, 14, 14.5, 16.1, 14.7, 17.8, 18.9, 18, 16, 14.4, 14.9, 13.5, 16.3, 15.3, 17.6, 18.7, 16.6, 14.7, 14.7, 13.1, 12.4, 15.8, 13.6, 16.5, 18.4, 16.4, 13.9, 13.2)
+notaxsmoke = subset(notaxsmoke, select = -3)
+notaxsmoke$RATE = notaxsmoke$RATE / 100
+export(notaxsmoke, "notaxsmoke.csv")
+notaxsmoke = read.csv("notaxsmoke.csv", header = TRUE)
+
+#
+notaxsmoke %>% 
+  ggplot(aes(x = YEAR, y = RATE)) + 
+  geom_point() +
+  geom_vline(xintercept = 2017, color = "red", size = 1, linetype = "dashed") + 
+  annotate("text", x = 2015.8, y = 0.13, label = "Tax Increase in CA",
+           size=4) +
+  labs(y = "Current Smoker Rate in Other States",
+       x = "Year") + scale_y_continuous(labels = scales::percent) + scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("6.pdf", width = 10, height = 7)
+
+# CA
+rdd_data(y = casmoke$RATE, 
+         x = casmoke$YEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+  
+casmoke %>%
+  select(YEAR, RATE) %>%
+  mutate(threshold = as.factor(ifelse(YEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = YEAR, y = RATE)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker Rate in CA",
+       x = "Year")+ scale_y_continuous(labels = scales::percent) + scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("8.pdf", width = 10, height = 7)
+
+# other states
+rdd_data(y = notaxsmoke$RATE, 
+         x = notaxsmoke$YEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+  
+notaxsmoke %>%
+  select(YEAR, RATE) %>%
+  mutate(threshold = as.factor(ifelse(YEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = YEAR, y = RATE)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker Rate in Other States",
+       x = "Year")+ scale_y_continuous(labels = scales::percent) + scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("9.pdf", width = 10, height = 7)
+
+# different slopes on both sides
+rdd_data(y = casmoke$RATE, 
+         x = casmoke$YEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+  
+casmoke %>%
+  select(YEAR, RATE) %>%
+  mutate(threshold = as.factor(ifelse(YEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = YEAR, y = RATE, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker Rate in CA",
+       x = "Year")+ scale_y_continuous(labels = scales::percent) + scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("10.pdf", width = 10, height = 7)
+
+rdd_data(y = notaxsmoke$RATE, 
+         x = notaxsmoke$YEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+  
+notaxsmoke %>%
+  select(YEAR, RATE) %>%
+  mutate(threshold = as.factor(ifelse(YEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = YEAR, y = RATE, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker Rate in Other States",
+       x = "Year")+ scale_y_continuous(labels = scales::percent) + scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("10.pdf", width = 11, height = 7)
+
+# 4: quadratic       
+rdd_data(y = casmoke$RATE, 
+         x = casmoke$YEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+  
+casmoke %>%
+  select(YEAR, RATE) %>%
+  mutate(threshold = as.factor(ifelse(YEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = YEAR, y = RATE, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker Rate in CA",
+       x = "Year")+ scale_y_continuous(labels = scales::percent) + scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("12.pdf", width = 10, height = 7)
+
+#
+rdd_data(y = notaxsmoke$RATE, 
+         x = notaxsmoke$YEAR, 
+         cutpoint = 2017) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+  
+notaxsmoke %>%
+  select(YEAR, RATE) %>%
+  mutate(threshold = as.factor(ifelse(YEAR >= 2017, 1, 0))) %>%
+  ggplot(aes(x = YEAR, y = RATE, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 2017, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Current Smoker Rate in Other States",
+       x = "Year")+ scale_y_continuous(labels = scales::percent) + scale_x_continuous(breaks = scales::pretty_breaks())
+ggsave("13.pdf", width = 11, height = 7)
+
+# sensitivity analysis
+lm_sensitivity <- casmoke %>%
+  filter(YEAR >= 2015 & YEAR <= 2019 & YEAR != 2017) %>%
+  mutate(threshold = ifelse(YEAR > 2017, 1, 0)) %$%
+  lm(RATE ~ threshold + I(YEAR - 2017) + threshold:I(YEAR - 2017))
+
+summary(lm_sensitivity)
+
+lm_sensitivity <- notaxsmoke %>%
+  filter(YEAR >= 2015 & YEAR <= 2019 & YEAR != 2017) %>%
+  mutate(threshold = ifelse(YEAR > 2017, 1, 0)) %$%
+  lm(RATE ~ threshold + I(YEAR - 2017) + threshold:I(YEAR - 2017))
+
+summary(lm_sensitivity)
+
